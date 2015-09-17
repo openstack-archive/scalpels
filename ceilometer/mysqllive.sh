@@ -24,26 +24,26 @@ mysql -e "SET GLOBAL $log_switch_var = ON;"
 # TODO use awk /reg/ statement instead
 sudo tailf $log_file | awk '{
 if ( $1 + 0 != $1 )
+    # TODO cat this line on its above line
     print $0;
 else if ( $1 + 0 == $1 && $2 == "Query" && $3 == "SELECT" && $4 == "1" )
-    # 0000 Query Limit 1
     ;
 else if ( $1 + 0 == $1 && $2 == "Query" && $3 == "COMMIT" )
-    # 0000 Query COMMIT
     ;
 else if ( $1 + 0 == $1 && $2 == "Query" && $3 == "ROLLBACK" )
-    # 0000 Query ROLLBACK
     ;
 else
-    # real queries
-    { $1=$2=""; print $0; }
+    # TODO flag to control empty line
+    { $1=$2=""; print $0; print ""}
 }
 '
 
+echo -------------------------------------
 echo reset $log_file_var to $old_log_file
 echo reset $log_switch_var to $old_log_switch
 mysql -e "SET GLOBAL $log_switch_var = $old_log_switch;"
 mysql -e "SET GLOBAL $log_file_var = '$old_log_file';"
 
 echo remove $log_file
+echo -------------------------------------
 sudo rm $log_file
