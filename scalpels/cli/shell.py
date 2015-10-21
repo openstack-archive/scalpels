@@ -3,14 +3,15 @@
 # Author: Kun Huang <academicgareth@gmail.com>
 
 import argparse
-from scalpels.cli.actions import load
+import importlib
 
 
 def run(parser):
     config = parser.__dict__
-    func = "run_%s" % config.pop("action")
-    actioncall = getattr(load, func)
-    ret = actioncall(config)
+    modstr = "scalpels.cli.actions.%s" % config.pop("action")
+    mod = importlib.import_module(modstr)
+    func = getattr(mod, "run")
+    return func(config)
 
 def main():
     rootparser = argparse.ArgumentParser(description="main entry point for scalpels")
@@ -22,18 +23,20 @@ def main():
 
     # setup start actions
     start = subparsers.add_parser("start")
-    start.add_argument("--storm", action="store_true", dest="storm", help="run concurrency nova boot")
+    start.add_argument("--file", action="store", dest="file", help="config file for this task", required=True)
 
     # setup report actions
     report = subparsers.add_parser("report")
 
     # setup re-setup actions
-    resetup = subparsers.add_parser("resetup")
+    setup = subparsers.add_parser("setup")
+    load.add_argument("--force", action="store_true", dest="force", help="re-create db")
+
     parser = rootparser.parse_args()
     try:
         run(parser)
     except Exception as e:
-        print e
+        raise
         return 1
     else:
         return 0

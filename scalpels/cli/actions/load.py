@@ -3,8 +3,8 @@
 # Author: Kun Huang <academicgareth@gmail.com>
 
 
-def run_load(config):
-    loads = config.keys()
+def run(config):
+    loads = (k for k in config if config[k])
     for load in loads:
         func = "load_%s" % load
         try:
