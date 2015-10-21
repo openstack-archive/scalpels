@@ -4,7 +4,18 @@
 
 from scalpels.db import api as db_api
 
+def _parse_agent_from_config(config):
+    if config.get("agent") is None:
+        return config
+    parsed_agents = []
+    for ag in config.get("agent"):
+        parsed_agents.extend(ag.split(","))
+    config.update({"agent":parsed_agents})
+    return config
+
+
 def run(config):
+    config = _parse_agent_from_config(config)
     print "command start: %s" % config
     data = [config]
     rets = []

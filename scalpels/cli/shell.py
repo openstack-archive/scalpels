@@ -23,7 +23,8 @@ def main():
 
     # setup start actions
     start = subparsers.add_parser("start")
-    start.add_argument("--file", action="store", dest="file", help="config file for this task", required=True)
+    start.add_argument("-f", "--file", action="store", dest="file", help="config file for this task", required=False)
+    start.add_argument("-a", "--agent", action="append", dest="agent", help="agent(s) to run", required=False)
 
     # setup report actions
     report = subparsers.add_parser("report")

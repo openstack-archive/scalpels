@@ -66,5 +66,7 @@ def result_get(result_uuid):
     return ret
 
 def task_get_last():
-    tasks = model_query(models.Task)
-    return tasks[-1]
+    tasks = model_query(models.Task).all()
+    if len(tasks) > 0:
+        return tasks[-1]
+    return None

@@ -6,6 +6,9 @@ from scalpels.db import api as db_api
 def run(config):
     print "command report: %s" % config
     last_task = db_api.task_get_last()
+    if not last_task:
+        print "no task yet."
+        return
     print "task: <%s>" % last_task.uuid
     results = []
     for ret_uuid in last_task.results:

@@ -7,5 +7,6 @@ def run(config):
     print "command setup: %s" % config
     if config["force"]:
         db_api.db_drop()
+        db_api.db_create()
     else:
         db_api.db_create()
