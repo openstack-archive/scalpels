@@ -30,7 +30,7 @@ def main():
 
     # setup re-setup actions
     setup = subparsers.add_parser("setup")
-    load.add_argument("--force", action="store_true", dest="force", help="re-create db")
+    setup.add_argument("--force", action="store_true", dest="force", help="re-create db")
 
     parser = rootparser.parse_args()
     try:
