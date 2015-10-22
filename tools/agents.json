@@ -1,0 +1,16 @@
+{
+    "agents": [
+        {
+            "name": "mysql"
+        },
+        {
+            "name": "rabbit"
+        },
+        {
+            "name": "traffic"
+        },
+        {
+            "name": "rpctraffic"
+        }
+    ]
+}
