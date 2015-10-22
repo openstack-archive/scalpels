@@ -7,6 +7,7 @@ import json
 from scalpels.db import api as db_api
 import subprocess
 import time
+import signal
 
 def _parse_agents_from_args(config):
     parsed_agents = set()
@@ -32,8 +33,9 @@ def _parse_agents_from_file(config):
     return parsed_agents
 
 # TODO this map should be saved in a config file
+# TODO refar to pre/exec/post
 agents_map = {
-    "mysql": "",
+    "mysql": "bash /opt/stack/scalpels/scripts/mysql-live.sh",
     "rabbit": "",
     "traffic": "",
     "rpctraffic": "",
@@ -47,13 +49,15 @@ def run(config):
     for ag in agents:
         ag_exec = agents_map.get(ag)
         if ag_exec:
-            ag_p = subprocess.Popen(ag_exec, stdout=subprocess.PIPE)
+            ag_p = subprocess.Popen(ag_exec.split(), stdout=subprocess.PIPE)
             running_agents.append(ag_p)
-    time.sleep(15)
+    time.sleep(5)
     data = []
     for ag_p in running_agents:
-        stdout = ag_p.communicate()[0]
-        ag_p.terminate()
+        # shell scripts has depend child which can't be killed by subprocess' API
+        # it should be ag_p.kill()
+        os.system("pkill -P %s" % ag_p.pid)
+        stdout = ag_p.stdout.read()
         data.append(stdout)
     rets = []
     ret = db_api.result_create(data)
