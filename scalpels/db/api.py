@@ -33,8 +33,8 @@ def task_create(results):
     """
     return IMPL.task_create(results)
 
-def task_get(task_uuid):
-    return IMPL.task_get(task_uuid)
+def task_get(task_uuid, fuzzy=False):
+    return IMPL.task_get(task_uuid, fuzzy)
 
 def task_get_last():
     return IMPL.task_get_last()

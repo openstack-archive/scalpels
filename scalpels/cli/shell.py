@@ -28,6 +28,8 @@ def main():
 
     # setup report actions
     report = subparsers.add_parser("report")
+    report.add_argument("--last", action="store_true", dest="last", help="report the last task")
+    report.add_argument("uuid", type=str, default="", nargs="?", help="report the last task")
 
     # setup re-setup actions
     setup = subparsers.add_parser("setup")

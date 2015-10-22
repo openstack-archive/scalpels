@@ -56,9 +56,21 @@ def task_create(results):
     task.save()
     return task
 
-def task_get(task_uuid):
-    task = model_query(models.Task).filter_by(uuid=task_uuid).first()
-    return task
+def task_get(task_uuid, fuzzy=False):
+    if not fuzzy:
+        task = model_query(models.Task).filter_by(uuid=task_uuid).first()
+        return task
+    tasks = model_query(models.Task).all()
+    matched = []
+    for t in tasks:
+        if t.uuid.startswith(task_uuid):
+            matched.append(t)
+    if len(matched) == 1:
+        return matched[0]
+    elif len(matched) > 1:
+        raise ValueError("more than 1 result found by fuzzy search")
+    elif len(matched) == 0:
+        raise ValueError("not found result by fuzzy search")
 
 
 def result_get(result_uuid):
