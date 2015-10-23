@@ -3,6 +3,7 @@
 # Author: Kun Huang <academicgareth@gmail.com>
 
 import json
+import subprocess
 
 from kombu import Connection
 from kombu import Exchange
@@ -53,7 +54,8 @@ class Worker(ConsumerMixin):
 
 with Connection('amqp://guest:guest@localhost:5672//') as conn:
     try:
+        subprocess.check_call("sudo rabbitmqctl trace_on", shell=True)
         worker = Worker(conn)
         worker.run()
     except KeyboardInterrupt:
-        print debug
+        subprocess.check_call("sudo rabbitmqctl trace_off", shell=True)

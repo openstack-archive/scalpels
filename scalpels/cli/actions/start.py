@@ -35,10 +35,10 @@ def _parse_agents_from_file(config):
 # TODO this map should be saved in a config file
 # TODO refar to pre/exec/post
 agents_map = {
-    "mysql": "bash /opt/stack/scalpels/scripts/mysql-live.sh",
-    "rabbit": "",
-    "traffic": "",
-    "rpctraffic": "",
+    "mysql": "bash /opt/stack/scalpels/scripts/mysql-live.sh", #XXX doesn't work now, needs works on interapt pipeline
+    "rabbit": "python /opt/stack/scalpels/scripts/rbt-trace.py",
+    "rpc": "bash /opt/stack/scalpels/scripts/port-input-traffic.sh 5672",
+    "traffic": "bash /opt/stack/scalpels/scripts/device-input-traffic.sh eth1",
 }
 
 def run(config):
@@ -51,12 +51,13 @@ def run(config):
         if ag_exec:
             ag_p = subprocess.Popen(ag_exec.split(), stdout=subprocess.PIPE)
             running_agents.append(ag_p)
-    time.sleep(5)
+    time.sleep(15)
     data = []
     for ag_p in running_agents:
         # shell scripts has depend child which can't be killed by subprocess' API
         # it should be ag_p.kill()
-        os.system("pkill -P %s" % ag_p.pid)
+        #os.system("pkill -P %s" % ag_p.pid)
+        ag_p.send_signal(signal.SIGINT)
         stdout = ag_p.stdout.read()
         data.append(stdout)
     rets = []

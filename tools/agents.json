@@ -12,5 +12,6 @@
         {
             "name": "rpctraffic"
         }
-    ]
+    ],
+    "sleep": 5,
 }
