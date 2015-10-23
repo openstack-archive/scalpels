@@ -11,7 +11,7 @@ from kombu.mixins import ConsumerMixin
 from kombu import Queue
 
 task_exchange = Exchange('amq.rabbitmq.trace', type='topic')
-task_queues = [Queue("trace_", task_exchange, routing_key="publish.*")]
+task_queues = []
 
 debug ={"method": set(),
         "result": set()}
@@ -53,9 +53,13 @@ class Worker(ConsumerMixin):
                 print "[result] %s\n" % oslo_body
 
 with Connection('amqp://guest:guest@localhost:5672//') as conn:
+    chan = conn.channel()
+    queue = Queue("trace_", task_exchange, routing_key="publish.*", channel=chan)
+    task_queues.append(queue)
     try:
         subprocess.check_call("sudo rabbitmqctl trace_on", shell=True)
         worker = Worker(conn)
         worker.run()
     except KeyboardInterrupt:
         subprocess.check_call("sudo rabbitmqctl trace_off", shell=True)
+        queue.delete()
