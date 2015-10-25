@@ -10,7 +10,7 @@ function install_scalpels {
 }
 
 function init_scalpels {
-    sca setup
+    echo "nothing yet, move setup to hook script which runned by jenkins"
 }
 
 function configure_scalpels {
