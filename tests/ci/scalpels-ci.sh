@@ -1,4 +1,4 @@
 #!/bin/bash
 # Author: Kun Huang <academicgareth@gmail.com>
 
-echo "Hello, World!!"
+echo "Hello, scalpels ci"
