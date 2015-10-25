@@ -1,11 +1,11 @@
 # Scalpels
-This is a project on digging OpenStack for performance or complecated issues.
+Scalpels is distributed tracing or digging system for OpenStack.
 
 ## Background
 OpenStack is made of multiple Python-based projects. Each project has similiar but different architecture. Scalpels gathers useful scripts or 3rd tools to help operator find what happen in your cloud.
 
 ## Contribute
-This project is prototype now and under 'quick' development. If you have interests in this work, please contact @kun_huang, at #openstack-chinese channel.
+This project is prototype now and under development. If you have interests in this work, please contact @kun_huang, at #openstack-chinese channel.
 
 ## Ideas
 Each project will have scripts working:
