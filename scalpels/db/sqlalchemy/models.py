@@ -42,3 +42,8 @@ class Result(BASE, ScalpelsBase):
     uuid = Column(String(36), default=lambda : str(uuid.uuid4()), nullable=False)
     data = Column(JSONEncodedData, nullable=False)
     unit = Column(String(20), nullable=True)
+
+class Setup(BASE, ScalpelsBase):
+    __tablename__ = "setup"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    config = Column(JSONEncodedData, nullable=False)

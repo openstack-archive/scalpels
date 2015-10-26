@@ -3,6 +3,7 @@
 SCALPELS_DIR=$DEST/scalpels
 SCALPELS_REPO=${SCALPELS_REPO:-${GIT_BASE}/openstack/scalpels.git}
 SCALPELS_BRANCH=${SCALPELS_BRANCH:-master}
+SCALPELS_DATA_DIR=$DATA_DIR/scalpels/scripts
 
 function install_scalpels {
     git_clone $SCALPELS_REPO $SCALPELS_DIR $SCALPELS_BRANCH
@@ -10,7 +11,7 @@ function install_scalpels {
 }
 
 function init_scalpels {
-    sca setup
+    echo "run sca setup later"
 }
 
 function configure_scalpels {
@@ -23,7 +24,6 @@ if is_service_enabled scalpels; then
     if [[ "$1" == "stack" && "$2" == "pre-install" ]]; then
         # Set up system services
         echo_summary "Configuring system services scalpels"
-        install_package cowsay
 
     elif [[ "$1" == "stack" && "$2" == "install" ]]; then
         # Perform installation of service source
