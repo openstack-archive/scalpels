@@ -7,6 +7,8 @@ sca setup -d /opt/stack/data/scalpels/scripts
 # debug messages
 sudo netstat -nltp
 sudo ps axf
+sudo env
+env
 
 echo "running rpc tracer"
 sca start -a rpc

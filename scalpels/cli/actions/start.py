@@ -52,7 +52,7 @@ def run(config):
         if ag_exec:
             ag_p = subprocess.Popen(ag_exec.split(), stdout=subprocess.PIPE)
             running_agents.append(ag_p)
-    time.sleep(15)
+    time.sleep(30)
     data = []
     for ag_p in running_agents:
         # shell scripts has depend child which can't be killed by subprocess' API
