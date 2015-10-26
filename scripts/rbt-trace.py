@@ -32,6 +32,9 @@ if head.startswith("method:"):
 elif head == "result":
     print_result = True
 
+print_method = True
+print_result = True
+
 class Worker(ConsumerMixin):
     def __init__(self, connection):
         self.connection = connection
@@ -44,6 +47,8 @@ class Worker(ConsumerMixin):
     # TODO get req if hint in resp
     def process_task(self, body, message):
         oslo_body = json.loads(json.loads(body)['oslo.message'])
+        print oslo_body
+        """
         if print_method and "method" in oslo_body:
             method = head.split(":", 1)[1]
             if hint in str(oslo_body) and method == oslo_body["method"]:
@@ -51,6 +56,7 @@ class Worker(ConsumerMixin):
         elif print_result and "result" in oslo_body:
             if hint in str(oslo_body):
                 print "[result] %s\n" % oslo_body
+        """
 
 with Connection('amqp://guest:guest@localhost:5672//') as conn:
     chan = conn.channel()
