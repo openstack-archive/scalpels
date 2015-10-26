@@ -32,6 +32,9 @@ if head.startswith("method:"):
 elif head == "result":
     print_result = True
 
+print_method = True
+print_result = True
+
 class Worker(ConsumerMixin):
     def __init__(self, connection):
         self.connection = connection
