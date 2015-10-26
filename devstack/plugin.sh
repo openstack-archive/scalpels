@@ -12,6 +12,8 @@ function install_scalpels {
 
 function init_scalpels {
     echo "run sca setup later"
+    install -d $SCALPELS_DATA_DIR
+    install -t $SCALPELS_DATA_DIR $SCALPELS_DIR/scripts/*
 }
 
 function configure_scalpels {
