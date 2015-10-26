@@ -8,6 +8,9 @@ sca setup -d /opt/stack/data/scalpels/scripts
 sudo netstat -nltp
 sudo ps axf
 
+pwd
+ls -alh
+
 echo "running rpc tracer"
 sca start -a rpc
 sca report
