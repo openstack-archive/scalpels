@@ -27,9 +27,10 @@ def nova_boot_bulk():
     if None in creds:
         raise ValueError("can't find all necessary creds from env: %s" % creds)
     nova = client.Client(2, *creds)
-    image = nova.images.get("a1e6a7a5-2e77-42a6-8417-1f47ba7ba911")
+    image = nova.images.find(name="cirros-0.3.4-x86_64-uec ")
     flavor = nova.flavors.get("3")
-    nics = [{"net-id":"c5e2d25d-72ef-4ef4-b39e-f10027f9289d"}]
+    net = nova.networks.find(label="private")
+    nics = [{"net-id":net.id}]
     ret = nova.servers.create(name="bulk-foo", image=image, flavor=flavor, min_count=2, max_count=2, nics=nics)
     print "we got %s" % ret
     return
