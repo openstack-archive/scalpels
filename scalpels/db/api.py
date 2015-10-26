@@ -13,8 +13,8 @@ IMPL = db_api.DBAPI("sqlalchemy", backend_mapping={"sqlalchemy":"scalpels.db.sql
 
 db_options.set_defaults(CONF, connection="sqlite:////tmp/scalpels.sqlite", sqlite_db="scalpels.sqlite")
 
-def db_create():
-    IMPL.db_create()
+def db_create(sc):
+    IMPL.db_create(sc)
 
 def db_drop():
     IMPL.db_drop()
@@ -44,3 +44,9 @@ def result_get(result_uuid):
     :returns : dict, with data and its metadata
     """
     return IMPL.result_get(result_uuid)
+
+def setup_config_get():
+    """
+    :returns : dict
+    """
+    return IMPL.setup_config_get()
