@@ -8,6 +8,10 @@ sca setup -d /opt/stack/data/scalpels/scripts
 sudo netstat -nltp
 sudo ps axf
 
+source /opt/stack/new/devstack/openrc admin admin
+
+nova list
+
 echo "running rpc tracer"
 sca start -a rpc
 sca report
