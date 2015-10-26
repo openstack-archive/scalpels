@@ -4,6 +4,10 @@
 echo "Hello, scalpels ci"
 sca setup -d /opt/stack/data/scalpels/scripts
 
+sudo netstat -nltp
+
+sudo ps axf
+
 echo "running rpc tracer"
 sca start -a rpc
 sca report

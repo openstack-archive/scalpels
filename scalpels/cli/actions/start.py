@@ -38,7 +38,7 @@ agents_map = {
     "mysql": "bash %s/mysql-live.sh", #XXX doesn't work now, needs works on interapt pipeline
     "rabbit": "python %s/rbt-trace.py",
     "rpc": "bash %s/port-input-traffic.sh 5672",
-    "traffic": "bash %s/device-input-traffic.sh eth1",
+    "traffic": "bash %s/device-input-traffic.sh eth0",
 }
 
 def run(config):
