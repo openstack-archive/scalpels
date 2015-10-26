@@ -33,7 +33,8 @@ def main():
 
     # setup re-setup actions
     setup = subparsers.add_parser("setup")
-    setup.add_argument("--force", action="store_true", dest="force", help="re-create db")
+    setup.add_argument("-f", "--force", action="store_true", dest="force", help="re-create db")
+    setup.add_argument("-d", "--data_dir", action="append", dest="data_dir",  help="data dir where to find script resources", required=False)
 
     parser = rootparser.parse_args()
     try:

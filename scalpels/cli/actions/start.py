@@ -35,10 +35,10 @@ def _parse_agents_from_file(config):
 # TODO this map should be saved in a config file
 # TODO refar to pre/exec/post
 agents_map = {
-    "mysql": "bash /opt/stack/scalpels/scripts/mysql-live.sh", #XXX doesn't work now, needs works on interapt pipeline
-    "rabbit": "python /opt/stack/scalpels/scripts/rbt-trace.py",
-    "rpc": "bash /opt/stack/scalpels/scripts/port-input-traffic.sh 5672",
-    "traffic": "bash /opt/stack/scalpels/scripts/device-input-traffic.sh eth1",
+    "mysql": "bash %s/mysql-live.sh", #XXX doesn't work now, needs works on interapt pipeline
+    "rabbit": "python %s/rbt-trace.py",
+    "rpc": "bash %s/port-input-traffic.sh 5672",
+    "traffic": "bash %s/device-input-traffic.sh eth1",
 }
 
 def run(config):
@@ -46,8 +46,9 @@ def run(config):
     agents = _parse_agents_from_args(config)
     agents |= _parse_agents_from_file(config)
     running_agents = []
+    data_dir = db_api.setup_config_get()["data_dir"].rstrip("/")
     for ag in agents:
-        ag_exec = agents_map.get(ag)
+        ag_exec = agents_map.get(ag) % data_dir
         if ag_exec:
             ag_p = subprocess.Popen(ag_exec.split(), stdout=subprocess.PIPE)
             running_agents.append(ag_p)
