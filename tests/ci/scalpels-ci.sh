@@ -10,6 +10,10 @@ sudo ps axf
 sudo env
 env
 
+echo "running load"
+source /opt/stack/new/devstack/openrc admin admin
+sca load --storm
+
 echo "running rpc tracer"
 sca start -a rpc
 sca report
