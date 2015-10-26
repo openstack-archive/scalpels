@@ -10,6 +10,14 @@ sudo ps axf
 sudo env
 env
 
+echo "running load"
+source /opt/stack/new/devstack/openrc admin admin
+sca load --storm
+nova list
+neutron net-list
+glance image-list
+nova flavor-list
+
 echo "running rpc tracer"
 sca start -a rpc
 sca report
