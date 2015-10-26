@@ -32,8 +32,12 @@ def get_session(**kwargs):
 def get_backend():
     return sys.modules[__name__]
 
-def db_create():
+def db_create(sc):
     BASE.metadata.create_all(get_engine())
+    setup = models.Setup()
+    setup.update({"config":sc})
+    setup.save()
+    return setup
 
 def db_drop():
     BASE.metadata.drop_all(get_engine())
@@ -81,4 +85,11 @@ def task_get_last():
     tasks = model_query(models.Task).all()
     if len(tasks) > 0:
         return tasks[-1]
+    return None
+
+def setup_config_get():
+    setups = model_query(models.Setup).all()
+    if len(setups) > 0:
+        setup = setups[-1]
+        return setup.config
     return None
