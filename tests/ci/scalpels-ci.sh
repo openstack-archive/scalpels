@@ -15,6 +15,16 @@ source /opt/stack/new/devstack/openrc admin admin
 sca load --storm
 
 echo "running rpc tracer"
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
+sudo iptables -L INPUT -x -n -v
 sca start -a rpc
 sca report
 
