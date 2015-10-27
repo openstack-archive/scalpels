@@ -15,6 +15,18 @@ source /opt/stack/new/devstack/openrc admin admin
 sca load --storm
 
 echo "running rpc tracer"
+sudo iptables -A OUTPUT -p tcp --dport 5672
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -L OUTPUT -x -n -v
+sudo iptables -D OUTPUT -p tcp --dport 5672
 sca start -a rpc
 sca report
 
