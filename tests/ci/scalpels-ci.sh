@@ -10,10 +10,14 @@ sudo ps axf
 sudo env
 env
 
+sudo iptables -t mangle -L PREROUTING
+sudo iptables -t mangle -A PREROUTING -p tcp --dport 5672
 echo "running load"
 source /opt/stack/new/devstack/openrc admin admin
 sca load --storm
 
+sudo iptables -t mangle -L PREROUTING
+sudo iptables -t mangle -D PREROUTING -p tcp --dport 5672
 echo "running rpc tracer"
 sca start -a rpc
 sca report
