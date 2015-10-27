@@ -3,7 +3,7 @@
 
 port=$1
 protocol=${2:-tcp}
-chain="INPUT"
+chain="PREROUTING"
 if [ -z "$port" ]; then
     echo "You must specify a port"
     exit 1
@@ -23,7 +23,7 @@ rule="$chain -p $protocol --dport $port"
 
 #XXX iptables -A INPUT -p tcp --dport 5672
 echo applying rule: $rule
-sudo iptables -A $rule
+sudo iptables -t mangle -A $rule
 
 interval=3
 packages=0
@@ -40,4 +40,4 @@ while [ 1 -eq 1 ]  ; do
 done
 
 echo deleting rule: $rule
-sudo iptables -D $rule
+sudo iptables -t mangle -D $rule
