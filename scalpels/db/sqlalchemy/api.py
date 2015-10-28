@@ -104,3 +104,7 @@ def setup_config_get():
         setup = setups[-1]
         return setup.config
     return None
+
+def get_all_results():
+    rets = model_query(models.Result).all()
+    return rets

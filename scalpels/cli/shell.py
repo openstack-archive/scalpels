@@ -41,6 +41,10 @@ def main():
     setup.add_argument("-f", "--force", action="store_true", dest="force", help="re-create db")
     setup.add_argument("-d", "--data_dir", action="store", dest="data_dir",  help="data dir where to find script resources", required=False)
 
+    # setup sca result --list
+    result = subparsers.add_parser("result")
+    result.add_argument("-l", "--list", action="store_true", dest="list", help="list all results from db")
+
     parser = rootparser.parse_args()
     try:
         run(parser)

@@ -41,4 +41,5 @@ if __name__ == "__main__":
     results = copy(task.results)
     ret = db_api.result_create(out)
     results.append(ret.uuid)
+    # TODO set this behaviour concurrable
     db_api.task_update(task_uuid, results=results)

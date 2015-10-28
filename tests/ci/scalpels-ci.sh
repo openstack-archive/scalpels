@@ -22,3 +22,6 @@ sca stop
 
 echo report data
 sca report
+
+echo result data
+sca result --list

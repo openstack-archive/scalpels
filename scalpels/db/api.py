@@ -53,3 +53,6 @@ def setup_config_get():
     :returns : dict
     """
     return IMPL.setup_config_get()
+
+def get_all_results():
+    return IMPL.get_all_results()
