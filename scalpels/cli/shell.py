@@ -26,6 +26,11 @@ def main():
     start.add_argument("-f", "--file", action="store", dest="file", help="config file for this task", required=False)
     start.add_argument("-a", "--agent", action="append", dest="agent", help="agent(s) to run", required=False)
 
+    # setup stop actions
+    stop = subparsers.add_parser("stop")
+    stop.add_argument("--last", action="store_true", dest="last", help="report the last task")
+    stop.add_argument("uuid", type=str, default="", nargs="?", help="report the last task")
+
     # setup report actions
     report = subparsers.add_parser("report")
     report.add_argument("--last", action="store_true", dest="last", help="report the last task")

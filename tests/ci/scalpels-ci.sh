@@ -10,18 +10,15 @@ sudo ps axf
 sudo env
 env
 
+echo start three agents
+sca start -a rpc -a rabbit -a traffic
+
 echo "running load"
 source /opt/stack/new/devstack/openrc admin admin
 sca load --storm
 
-echo "running rpc tracer"
-sca start -a rpc
-sca report
+echo stop those agents
+sca stop
 
-echo "running rabbit tracer"
-sca start -a rabbit
-sca report
-
-echo "running traffic tracer"
-sca start -a traffic
+echo report data
 sca report
