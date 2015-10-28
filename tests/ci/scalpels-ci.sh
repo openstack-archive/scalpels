@@ -9,11 +9,15 @@ sudo netstat -nltp
 sudo ps axf
 sudo env
 env
+sudo iptables -t mangle -L PREROUTING -xnv
+sudo iptables -t nat -L PREROUTING -xnv
 
 echo "running load"
 source /opt/stack/new/devstack/openrc admin admin
 sca load --storm
 
+sudo iptables -t mangle -L PREROUTING -xnv
+sudo iptables -t nat -L PREROUTING -xnv
 echo "running rpc tracer"
 sca start -a rpc
 sca report
