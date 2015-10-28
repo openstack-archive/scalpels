@@ -26,15 +26,18 @@ def result_create(data):
     """
     return IMPL.result_create(data)
 
-def task_create(results):
+def task_create(results, pids):
     """
     :param results: a list contains result.uuid
     :returns: task model obj
     """
-    return IMPL.task_create(results)
+    return IMPL.task_create(results, pids)
 
 def task_get(task_uuid, fuzzy=False):
     return IMPL.task_get(task_uuid, fuzzy)
+
+def task_update(task_uuid, results=None, pids=None):
+    return IMPL.task_update(task_uuid, results, pids)
 
 def task_get_last():
     return IMPL.task_get_last()

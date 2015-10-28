@@ -8,6 +8,7 @@ from scalpels.db import api as db_api
 import subprocess
 import time
 import signal
+from scalpels.agents.base import run_agent
 
 def _parse_agents_from_args(config):
     parsed_agents = set()
@@ -45,25 +46,16 @@ def run(config):
     print "command start: %s" % config
     agents = _parse_agents_from_args(config)
     agents |= _parse_agents_from_file(config)
-    running_agents = []
+
+    task = db_api.task_create(results=[], pids=[])
+
     data_dir = db_api.setup_config_get()["data_dir"].rstrip("/")
+    pids = []
     for ag in agents:
         ag_exec = agents_map.get(ag) % data_dir
         if ag_exec:
-            ag_p = subprocess.Popen(ag_exec.split(), stdout=subprocess.PIPE)
-            running_agents.append(ag_p)
-    time.sleep(30)
-    data = []
-    for ag_p in running_agents:
-        # shell scripts has depend child which can't be killed by subprocess' API
-        # it should be ag_p.kill()
-        #os.system("pkill -P %s" % ag_p.pid)
-        ag_p.send_signal(signal.SIGINT)
-        stdout = ag_p.stdout.read()
-        data.append(stdout)
-    rets = []
-    ret = db_api.result_create(data)
-    rets.append(ret.uuid)
-    task = db_api.task_create(rets)
-    print "task: %s runs successfully!" % task.uuid
-    return
+            pid = run_agent(task.uuid, ag)
+            pids.append(pid)
+
+    task = db_api.task_update(task.uuid, pids=pids)
+    print "task <%s> runs successfully!" % task.uuid

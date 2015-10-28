@@ -35,6 +35,7 @@ class Task(BASE, ScalpelsBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     uuid = Column(String(36), default=lambda : str(uuid.uuid4()), nullable=False)
     results = Column(JSONEncodedData, nullable=False)
+    pids = Column(JSONEncodedData, nullable=False)
 
 class Result(BASE, ScalpelsBase):
     __tablename__ =  "result"

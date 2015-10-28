@@ -54,11 +54,22 @@ def result_create(data):
     result.save()
     return result
 
-def task_create(results):
+def task_create(results, pids):
     task = models.Task()
-    task.update({"results":results})
+    task.update({"results":results, "pids":pids})
     task.save()
     return task
+
+def task_update(task_uuid, results=None, pids=None):
+    task = model_query(models.Task).filter_by(uuid=task_uuid).first()
+    if not results:
+        task.update({"results":results})
+    if not pids:
+        task.update({"pids":pids})
+    task.save()
+    return task
+
+
 
 def task_get(task_uuid, fuzzy=False):
     if not fuzzy:
