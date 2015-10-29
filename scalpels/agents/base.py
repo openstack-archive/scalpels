@@ -14,7 +14,7 @@ def run_agent(task_uuid, ag):
     ag = subprocess.Popen(cmd.split())
     return ag.pid
 
-def parse_rpc(out):
+def _parse_traffic(out, name):
     """
     in:
         ts, 123.00 pkts  2312 bytes
@@ -29,7 +29,7 @@ def parse_rpc(out):
         unit: bytes
         data: [(ts, 2312.00), ...]
     """
-    ag_name = "Port Traffic"
+    ag_name = "%s Traffic" % name
     pkts_ret = {"name": ag_name,
                 "unit": "pkts",
                 "data":[]}
@@ -42,3 +42,9 @@ def parse_rpc(out):
         bytes_ret["data"].append((ts, bytes))
 
     return (pkts_ret, bytes_ret)
+
+def parse_rpc(out):
+    return _parse_traffic(out, "Port")
+
+def parse_traffic(out):
+    return _parse_traffic(out, "Device")
