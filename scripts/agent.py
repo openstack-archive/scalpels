@@ -8,6 +8,8 @@ import sys
 from scalpels.db import api as db_api
 from copy import deepcopy as copy
 import signal
+from tooz import coordination
+import time
 
 """
 python <path-to-dir>/agent.py <uuid> mysql
@@ -37,9 +39,19 @@ if __name__ == "__main__":
     # this kill is to script process
     worker_p = psutil.Process(worker.pid)
     worker_p.send_signal(signal.SIGINT)
-    task = db_api.task_get(task_uuid)
-    results = copy(task.results)
-    ret = db_api.result_create(out)
-    results.append(ret.uuid)
-    # TODO set this behaviour concurrable
-    db_api.task_update(task_uuid, results=results)
+    print "killing agent %s" % ag
+    print "%s got data %s" % (ag, out)
+
+    # TODO file lock is okay in localhost, here need redis for distributed
+    # lock istead
+    co = coordination.get_coordinator("file:///tmp", b"localhost")
+    co.start()
+    lock = co.get_lock("task_update_lock")
+    with lock:
+        task = db_api.task_get(task_uuid)
+        results = copy(task.results)
+        ret = db_api.result_create(out)
+        results.append(ret.uuid)
+        db_api.task_update(task_uuid, results=results)
+        time.sleep(2)
+    co.stop()
