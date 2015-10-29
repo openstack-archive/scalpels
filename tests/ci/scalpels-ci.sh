@@ -16,9 +16,13 @@ sca start -a rpc -a rabbit -a traffic
 echo "running load"
 source /opt/stack/new/devstack/openrc admin admin
 sca load --storm
+sleep 10
 
 echo stop those agents
 sca stop
+
+echo waiting agent write data into db before report
+sleep 20
 
 echo report data
 sca report
