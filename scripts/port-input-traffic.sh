@@ -22,7 +22,7 @@ fi
 rule="$chain -p $protocol --dport $port"
 
 #XXX iptables -A INPUT -p tcp --dport 5672
-echo applying rule: $rule
+#echo applying rule: $rule
 sudo iptables -t mangle -A $rule
 
 interval=3
@@ -33,11 +33,10 @@ while [ 1 -eq 1 ]  ; do
     sleep $interval
     n_packages=`sudo iptables -t mangle -L $chain -n -v -x | grep $port | grep $protocol | tail -n 1 | awk '{print $1}'`
     n_bytes=`sudo iptables -t mangle -L $chain -n -v -x | grep $port | grep $protocol | tail -n 1 | awk '{print $2}'`
-    python -c "print '%0.2f pkt/s' % (float($n_packages-$packages)/int($interval))"
-    python -c "print '%0.2f byte/s' % (float($n_bytes-$bytes)/int($interval))"
+    python -c "print '%0.2f pkt/s %0.2f byte/s' % (float($n_packages-$packages)/int($interval), float($n_bytes-$bytes)/int($interval))"
     packages=$n_packages
     bytes=$n_bytes
 done
 
-echo deleting rule: $rule
+#echo deleting rule: $rule
 sudo iptables -t mangle -D $rule

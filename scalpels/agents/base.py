@@ -13,3 +13,32 @@ def run_agent(task_uuid, ag):
     cmd = "python %s/agent.py %s %s" % (data_dir, task_uuid, ag)
     ag = subprocess.Popen(cmd.split())
     return ag.pid
+
+def parse_rpc(out):
+    """
+    in:
+        ts, 123.00 pkts  2312 bytes
+        ...
+        ...
+    out:
+        name: Port Traffic
+        unit: pkts
+        data: [(ts, 123.00), ...]
+
+        name: Port Traffic
+        unit: bytes
+        data: [(ts, 2312.00), ...]
+    """
+    ag_name = "Port Traffic"
+    pkts_ret = {"name": ag_name,
+                "unit": "pkts",
+                "data":[]}
+    bytes_ret = {"name": ag_name,
+                "unit": "bytes",
+                "data":[]}
+    for ts, _t in out:
+        pkts, pkts_unit, bytes, bytes_unit = _t.split(" ", 3)
+        pkts_ret["data"].append((ts, pkts))
+        bytes_ret["data"].append((ts, bytes))
+
+    return (pkts_ret, bytes_ret)

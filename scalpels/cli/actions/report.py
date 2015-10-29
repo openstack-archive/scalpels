@@ -33,4 +33,4 @@ def run(config):
     for ret_uuid in task.results:
         ret = db_api.result_get(ret_uuid)
         results.append(ret.data)
-        print "result <%s>, data: %s" % (ret.uuid, ret.data)
+        print "result <%s>, data: %s, unit: %s, name: %s" % (ret.uuid, ret.data, ret.unit, ret.name)

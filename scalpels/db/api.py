@@ -19,12 +19,12 @@ def db_create(sc):
 def db_drop():
     IMPL.db_drop()
 
-def result_create(data):
+def result_create(name="", unit="", data=None):
     """
     :param data: a list :)
     :returns: result model obj
     """
-    return IMPL.result_create(data)
+    return IMPL.result_create(name, unit, data)
 
 def task_create(results, pids):
     """
