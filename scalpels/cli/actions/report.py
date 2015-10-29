@@ -3,6 +3,14 @@
 # Author: Kun Huang <academicgareth@gmail.com>
 
 from scalpels.db import api as db_api
+from prettytable import PrettyTable
+
+
+def pprint_result(result):
+    t = PrettyTable(["timestamp", "%s(%s)" % (result.name, result.unit)])
+    for data in result.data:
+        t.add_row([data[0], data[1][:100]])
+    print t
 
 LOWEST=8
 
@@ -29,8 +37,6 @@ def run(config):
 
     print "command report: %s" % config
     print "task: <%s>" % task.uuid
-    results = []
     for ret_uuid in task.results:
         ret = db_api.result_get(ret_uuid)
-        results.append(ret.data)
-        print "result <%s>, data: %s, unit: %s, name: %s" % (ret.uuid, ret.data, ret.unit, ret.name)
+        pprint_result(ret)
