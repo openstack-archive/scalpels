@@ -24,8 +24,11 @@ class Worker(ConsumerMixin):
 
     # TODO get req if hint in resp
     def process_task(self, body, message):
-        oslo_body = json.loads(json.loads(body)['oslo.message'])
-        print oslo_body
+        rpc_body = json.loads(body)
+        if "oslo.message" in rpc_body:
+            print json.loads(rpc_body["oslo.message"])
+        else:
+            print rpc_body
 
 with Connection('amqp://guest:guest@localhost:5672//') as conn:
     chan = conn.channel()
