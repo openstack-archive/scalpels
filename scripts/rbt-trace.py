@@ -35,9 +35,10 @@ with Connection('amqp://guest:guest@localhost:5672//') as conn:
     queue = Queue("trace_", task_exchange, routing_key="publish.*", channel=chan)
     task_queues.append(queue)
     try:
-        subprocess.check_call("sudo rabbitmqctl trace_on", shell=True)
+        # Don't need check here, if commnd failed, it would raise CalledProcessError
+        subprocess.check_output("sudo rabbitmqctl trace_on", shell=True)
         worker = Worker(conn)
         worker.run()
     except KeyboardInterrupt:
-        subprocess.check_call("sudo rabbitmqctl trace_off", shell=True)
+        subprocess.check_output("sudo rabbitmqctl trace_off", shell=True)
         queue.delete()

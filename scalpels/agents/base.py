@@ -48,3 +48,17 @@ def parse_rpc(out):
 
 def parse_traffic(out):
     return _parse_traffic(out, "Device")
+
+def parse_rabbit(out):
+    """
+    in:
+        ts, {u'_unique_id': u'xxx', u'failure': None, u'ending': True, u'result': None, u'_msg_id': u'xxx'}
+    out:
+        name: RabbitMQ
+        unit: None
+        data: [(ts, <msg body>), ...]
+    """
+    rbt_ret = {"name": "RabbitMQ",
+               "unit": None,
+               "data": out}
+    return (rbt_ret, )
