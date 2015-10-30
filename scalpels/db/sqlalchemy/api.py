@@ -48,9 +48,13 @@ def model_query(model, session=None):
     query = oslodbsqa_utils.model_query(model, session)
     return query
 
-def result_create(name="", unit="", data=None):
+def result_create(name="", unit="", data=None, rtype=None):
     result = models.Result()
-    result.update({"name":name, "unit": unit, "data":data})
+    result.update({"name":name,
+                   "unit": unit,
+                   "data":data,
+                   "rtype": rtype if rtype else "unknown",
+                  })
     result.save()
     return result
 

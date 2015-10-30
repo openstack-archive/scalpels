@@ -32,10 +32,12 @@ def _parse_traffic(out, name):
     ag_name = "%s Traffic" % name
     pkts_ret = {"name": ag_name,
                 "unit": "pkts",
-                "data":[]}
+                "data": [],
+                "rtype": "stream",}
     bytes_ret = {"name": ag_name,
                 "unit": "bytes",
-                "data":[]}
+                "data": [],
+                "rtype": "stream",}
     for ts, _t in out:
         pkts, pkts_unit, bytes, bytes_unit = _t.split(" ", 3)
         pkts_ret["data"].append((ts, pkts))
@@ -60,5 +62,6 @@ def parse_rabbit(out):
     """
     rbt_ret = {"name": "RabbitMQ",
                "unit": None,
+               "rtype": "log",
                "data": out}
     return (rbt_ret, )

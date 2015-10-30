@@ -44,6 +44,7 @@ class Result(BASE, ScalpelsBase):
     data = Column(JSONEncodedData, nullable=False)
     unit = Column(String(20), nullable=True)
     name = Column(String(20), nullable=True)
+    rtype = Column(String(20), nullable=False)
 
 class Setup(BASE, ScalpelsBase):
     __tablename__ = "setup"
