@@ -34,6 +34,7 @@ def main():
     # setup report actions
     report = subparsers.add_parser("report")
     report.add_argument("--last", action="store_true", dest="last", help="report the last task")
+    report.add_argument("--html", action="store_true", dest="html", help="report html to stdout instead of pretty print")
     report.add_argument("uuid", type=str, default="", nargs="?", help="report the last task")
 
     # setup re-setup actions
