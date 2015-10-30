@@ -24,10 +24,11 @@ def get_last_task():
     return last_task
 
 def generate_result_html(result):
-    tmpl_dir  = os.path.dirname(templates.__file__)
-    lookup = TemplateLookup(directories=[tmpl_dir])
-    t = lookup.get_template("line-chart.mako")
-    print t.render(**result.__dict__)
+    if result.rtype == "stream":
+        tmpl_dir  = os.path.dirname(templates.__file__)
+        lookup = TemplateLookup(directories=[tmpl_dir])
+        t = lookup.get_template("line-chart.mako")
+        print t.render(**result.__dict__)
 
 def generate_multiple_result_html(result):
     raise NotImplementedError("%s is not impl" % "generate_multiple_result_html")
