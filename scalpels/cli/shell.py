@@ -44,6 +44,8 @@ def main():
     # setup sca result --list
     result = subparsers.add_parser("result")
     result.add_argument("-l", "--list", action="store_true", dest="list", help="list all results from db")
+    result.add_argument("uuid", type=str, default="", nargs="?", help="report the last task")
+    result.add_argument("--html", action="store_true", dest="html", help="report html to stdout instead of pretty print")
 
     parser = rootparser.parse_args()
     try:
