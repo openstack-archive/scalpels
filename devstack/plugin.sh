@@ -20,12 +20,35 @@ function configure_scalpels {
     echo "nothing need config now."
 }
 
+function install_dtrace_python {
+    old_dir=`pwd`
+    cd $DATA_DIR
+    wget https://github.com/python/cpython/archive/ad609d460a207bc12ca83b43ab764ea58bd013ab.zip -O cpython.zip
+    wget https://raw.githubusercontent.com/pyKun/openstack-systemtap-toolkit/master/cpython-patch/python_dtrace-2_7_9-enhanced.patch -O python_dtrace-2_7_9-enhanced.patch
+    unzip cpython.zip
+    cd cpython
+    git init
+    git apply ../python_dtrace-2_7_9-enhanced.patch
+    #sudo rm -rf /usr/local/lib/python2.7
+    autoconf
+    ./configure "--prefix=$DATA_DIR/cpython_build/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl'
+    make -j && make install
+
+    cd $DATA_DIR
+    install_package systemtap
+    install_package gcc
+    ./cpython_build/bin/python -c "import sys"
+    sudo stap -l 'process("./cpython_build/bin/python").mark("*")'
+    cd $old_dir
+}
+
 # check for service enabled
 if is_service_enabled scalpels; then
 
     if [[ "$1" == "stack" && "$2" == "pre-install" ]]; then
         # Set up system services
         echo_summary "Configuring system services scalpels"
+        install_dtrace_python
 
     elif [[ "$1" == "stack" && "$2" == "install" ]]; then
         # Perform installation of service source
