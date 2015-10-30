@@ -11,7 +11,7 @@ import os
 
 
 def pprint_result(result):
-    print "<task %s" % result.uuid
+    print "<task %s>" % result.uuid
     t = PrettyTable(["timestamp", "%s (%s)" % (result.name, result.unit)])
     for data in result.data:
         t.add_row([data[0], data[1][:100]])
