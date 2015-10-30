@@ -29,8 +29,12 @@ def generate_result_html(result):
     t = lookup.get_template("line-chart.mako")
     print t.render(**result.__dict__)
 
-def generate_multiple_result_html(result):
-    raise NotImplementedError("%s is not impl" % "generate_multiple_result_html")
+def generate_multiple_result_html(results):
+    tmpl_dir  = os.path.dirname(templates.__file__)
+    lookup = TemplateLookup(directories=[tmpl_dir])
+    t = lookup.get_template("multi-line-chart.mako")
+    d = {"results": results}
+    print t.render(**d)
 
 def run(config):
     uuid = config.get("uuid")
@@ -51,6 +55,11 @@ def run(config):
 
     print "command report: %s" % config
     print "task: <%s>" % task.uuid
+    rets = []
     for ret_uuid in task.results:
         ret = db_api.result_get(ret_uuid)
-        pprint_result(ret)
+        rets.append(ret)
+    if config.get("html"):
+        generate_multiple_result_html(rets)
+    else:
+        map(pprint_result, rets)
