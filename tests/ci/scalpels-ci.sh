@@ -32,5 +32,6 @@ sleep 120
 sca stop
 
 for i in `sca result --list --short | tail -n2`; do
-    sca result $i --html > $BASE/logs/scalpels-test-$i.html
+    sca result $i --html > $BASE/logs/scalpels-result-$i.html
 done
+sca report --html > $BASE/logs/scalpels-report.html
