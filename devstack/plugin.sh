@@ -60,7 +60,7 @@ function install_dtrace_python {
     #sudo rm -rf /usr/local/lib/python2.7
     autoconf
     #./configure "--prefix=$DATA_DIR/cpython_build/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl'
-    ./configure "--prefix=/usr/local/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl'
+    ./configure "--prefix=/usr/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl'
     make -j && sudo make install
 
     cd $DATA_DIR
