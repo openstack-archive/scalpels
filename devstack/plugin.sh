@@ -41,6 +41,8 @@ if is_service_enabled scalpels; then
         # Initialize and start the scalpels service
         echo_summary "Initializing scalpels"
         init_scalpels
+        python -c "import sys; print sys.path"
+        python -c "import pip; print pip.__file__"
     fi
 
     if [[ "$1" == "unstack" ]]; then
