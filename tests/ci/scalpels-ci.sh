@@ -38,6 +38,12 @@ function report_html_test {
     sca report --html > $BASE/logs/scalpels-report.html
 }
 
+function stap_test {
+    scal_ci=$BASE/new/scalpels/tests/ci/
+    sudo -vvv $scal_ci/pyfunc.stp -c "$DATA_DIR/cpython_build/bin/python $scal_ci/test-func.py"
+}
+
 debug_msg
 basic_test
 report_html_test
+stap_test
