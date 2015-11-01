@@ -1,0 +1,14 @@
+probe python.function.entry = process("/opt/stack/hkpython/bin/python").mark("function__entry")
+{
+        filename = user_string();
+        funcname = user_string();
+        lineno = ;
+        callargs = user_string();
+        kwdict = user_string();
+}
+
+probe python.function.entry
+{
+if (isinstr(funcname, "hk"))
+    printf("%s\t%s\t%d\t%s\t%s\n", filename, funcname, lineno, callargs, kwdict)
+}
