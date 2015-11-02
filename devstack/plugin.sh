@@ -69,6 +69,10 @@ if is_service_enabled scalpels; then
             install_package autoconf automake gcc m4
             install_systemtap
             install_dtrace_python
+        elif is_fedora; then
+            install_package systemtap
+            sudo stap -e 'probe begin { printf("Hello, World!\n"); exit() }'
+            # python is enabled with dtrace by default in fedora
         fi
 
     elif [[ "$1" == "stack" && "$2" == "install" ]]; then
