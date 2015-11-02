@@ -46,6 +46,8 @@ function ubuntu_stap_test {
 function stap_test {
     if is_ubuntu; then
         ubuntu_stap_test
+    elif is_fedora; then
+        stap -e'probe python.function.return {log(filename);}' -c "python -c 'pass'"
     fi
 }
 
