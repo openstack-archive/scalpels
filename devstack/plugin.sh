@@ -50,12 +50,17 @@ function install_dtrace_python {
 
     #sudo rm -rf /usr/local/lib/python2.7
     autoconf
-    ./configure "--prefix=$DATA_DIR/cpython_build/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl'
+    ./configure "--prefix=/usr/local/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl' '--enable-shared'
     make -j && make install
 
     cd $DATA_DIR
-    ./cpython_build/bin/python -c "import sys"
-    sudo stap -l 'process("./cpython_build/bin/python").mark("*")'
+    ldd /usr/local/bin/python
+    which python
+    /usr/local/bin/python -c "import sys"
+    sudo stap -l 'process("/usr/local/bin/python").mark("*")'
+    sudo stap -l 'process("/usr/local/bin/python").library("libpython2.7.so.1.0").mark("*")'
+    sudo stap -l 'process("python").library("libpython2.7.so.1.0").mark("*")'
+    exit 1
     cd $old_dir
 }
 
