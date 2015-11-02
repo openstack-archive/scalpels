@@ -50,12 +50,33 @@ function install_dtrace_python {
 
     #sudo rm -rf /usr/local/lib/python2.7
     autoconf
-    ./configure "--prefix=$DATA_DIR/cpython_build/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl'
-    make -j && make install
+    ./configure "--prefix=/usr/local/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl' '--enable-shared'
+    make -j && sudo make install
 
     cd $DATA_DIR
-    ./cpython_build/bin/python -c "import sys"
-    sudo stap -l 'process("./cpython_build/bin/python").mark("*")'
+    which python
+    ldd /usr/local/bin/python
+    export LD_LIBRARY_PATH=/usr/local/lib/
+    echo $LD_LIBRARY_PATH
+    ldd /usr/local/bin/python
+    stap -l 'process("python").library("libpython2.7.so.1.0").mark("*")'
+    cat > pyfunc_tmp.stp < "EOF"
+probe python.function.entry = process("python").library("libpython2.7.so.1.0").mark("function__entry")
+{
+    filename = user_string($arg1);
+    funcname = user_string($arg2);
+    lineno = $arg3;
+    callargs = user_string($arg4);
+    kwdict = user_string($arg5);
+}
+probe python.function.entry
+{
+    printf("%s\t%s\t%d\t%s\t%s\n", filename, funcname, lineno, callargs, kwdict)
+}
+EOF
+    cat pyfunc_tmp.stp
+    sudo stap -v pyfunc_tmp.stp -c "python -c 'pass'"
+    exit 13
     cd $old_dir
 }
 
