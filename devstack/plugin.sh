@@ -65,6 +65,7 @@ if is_service_enabled scalpels; then
     if [[ "$1" == "stack" && "$2" == "pre-install" ]]; then
         # Set up system services
         echo_summary "Configuring system services scalpels"
+        sudo dpkg -l
         if is_ubuntu; then
             install_package autoconf automake gcc m4
             install_systemtap

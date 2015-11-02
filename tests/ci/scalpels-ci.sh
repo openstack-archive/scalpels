@@ -6,6 +6,7 @@ sca setup -d /opt/stack/data/scalpels/scripts
 source /opt/stack/new/devstack/openrc admin admin
 
 function debug_msg {
+    sudo dpkg -l
     sudo netstat -nltp
     sudo ps axf
     sudo env
