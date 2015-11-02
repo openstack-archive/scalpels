@@ -41,21 +41,42 @@ function install_dtrace_python {
 
     wget https://github.com/python/cpython/archive/ad609d460a207bc12ca83b43ab764ea58bd013ab.zip -O cpython.zip
     wget https://raw.githubusercontent.com/pyKun/openstack-systemtap-toolkit/master/cpython-patch/python_dtrace-2_7_9-enhanced.patch -O python_dtrace-2_7_9-enhanced.patch
+    wget https://raw.githubusercontent.com/pyKun/openstack-systemtap-toolkit/master/cpython-patch/python_dtrace-2_7_9-05d8fd4c57a1.patch -O python_dtrace-2_7_9-05d8fd4c57a1.patch
     unzip cpython.zip
     mv ./cpython-ad609d460a207bc12ca83b43ab764ea58bd013ab ./cpython
     cd cpython
 
     git init
-    git apply ../python_dtrace-2_7_9-enhanced.patch
+    #git apply ../python_dtrace-2_7_9-enhanced.patch
+    git apply ../python_dtrace-2_7_9-05d8fd4c57a1.patch
 
     #sudo rm -rf /usr/local/lib/python2.7
     autoconf
-    ./configure "--prefix=$DATA_DIR/cpython_build/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl'
-    make -j && make install
+    ./configure "--prefix=/usr/local/" '--with-dtrace' '--enable-ipv6' '--enable-unicode=ucs2' '--with-dbmliborder=bdb:gdbm' '--with-system-expat' '--with-system-ffi' '--with-fpectl' '--enable-shared'
+    make -j && sudo make install
 
     cd $DATA_DIR
-    ./cpython_build/bin/python -c "import sys"
-    sudo stap -l 'process("./cpython_build/bin/python").mark("*")'
+    which python
+    echo $LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=/usr/lib/:/usr/local/lib/
+    echo $LD_LIBRARY_PATH
+    ldd /usr/local/bin/python
+    stap -l 'process("python").library("libpython2.7.so.1.0").mark("*")'
+    cat > pyfunc_tmp.stp << "EOF"
+probe python.function.entry = process("python").library("libpython2.7.so.1.0").mark("function__entry")
+{
+    filename = user_string($arg1);
+    funcname = user_string($arg2);
+    lineno = $arg3;
+}
+probe python.function.entry
+{
+    printf("%s\t%s\t%d\n", filename, funcname, lineno)
+}
+EOF
+    cat pyfunc_tmp.stp
+    sudo stap -v pyfunc_tmp.stp -c "python -c 'pass'"
+    exit 13
     cd $old_dir
 }
 
