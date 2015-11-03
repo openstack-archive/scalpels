@@ -41,6 +41,7 @@ agents_map = {
     "rpc": "bash %s/port-input-traffic.sh 5672",
     "traffic": "bash %s/device-input-traffic.sh eth0",
     "oslolock": "stap %s/oslo-lock.stp", # with sudo, need add current user to stapdev group
+    "modelsave": "stap %s/model-save.stp", # with sudo, need add current user to stapdev group
 }
 
 def run(config):

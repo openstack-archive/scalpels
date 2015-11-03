@@ -66,6 +66,13 @@ def parse_rabbit(out):
                "data": out}
     return (rbt_ret, )
 
+def _parse_count_stream(out, name):
+    ret = {"name": name,
+           "unit": "count",
+           "rtype": "stream",
+           "data": out}
+    return (ret, )
+
 def parse_oslolock(out):
     """
     in:
@@ -77,8 +84,7 @@ def parse_oslolock(out):
         unit: Count
         data: [(ts, 0), ...)
     """
-    ret = {"name": "Oslo-Lock",
-           "unit": "count",
-           "rtype": "stream",
-           "data": out}
-    return (ret, )
+    return _parse_count_stream(out, "Oslo-Lock")
+
+def parse_modelsave(out):
+    return _parse_count_stream(out, "Model-Save")
