@@ -1,8 +1,10 @@
 #!/usr/bin/stap
+# this script is tested locally only, because community CI has not been set up now
 
 global count = 0;
 global old_count = 0;
 probe python.function.entry {
+    # line number here should not be necessary, please see https://bugs.launchpad.net/scalpels/+bug/1512687
 	if ((funcname == "lock") && isinstr(filename, "oslo_concurrency/lockutils.py") && (lineno == 163)) {
 		count = count + 1;
 	}
