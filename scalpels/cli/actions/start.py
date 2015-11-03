@@ -40,6 +40,7 @@ agents_map = {
     "rabbit": "python %s/rbt-trace.py",
     "rpc": "bash %s/port-input-traffic.sh 5672",
     "traffic": "bash %s/device-input-traffic.sh eth0",
+    "oslolock": "sudo stap %s/oslo-lock.stp",
 }
 
 def run(config):

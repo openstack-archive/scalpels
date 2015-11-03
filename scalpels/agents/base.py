@@ -65,3 +65,20 @@ def parse_rabbit(out):
                "rtype": "log",
                "data": out}
     return (rbt_ret, )
+
+def parse_oslolock(out):
+    """
+    in:
+        ts, 4
+        ts, 0
+        ...
+    out:
+        name: Oslo-Lock
+        unit: Count
+        data: [(ts, 0), ...)
+    """
+    ret = {"Name": "Oslo-Lock",
+           "unit": "count",
+           "rtype": "stream",
+           "data": out}
+    return (ret, )
