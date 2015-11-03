@@ -13,6 +13,7 @@ function debug_msg {
 }
 
 function basic_test {
+    sca agent -l
     sca start -a rpc -a rabbit -a traffic
 
     sca load --storm
