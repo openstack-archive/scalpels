@@ -91,3 +91,6 @@ def parse_modelsave(out):
 
 def parse_sqlaexec(out):
     return _parse_count_stream(out, "Sqlalchemy-Execute")
+
+def parse_rpccount(out):
+    return _parse_count_stream(out, "RPC-Count")

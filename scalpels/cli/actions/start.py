@@ -43,6 +43,7 @@ agents_map = {
     "oslolock": "stap %s/oslo-lock.stp", # with sudo, need add current user to stapdev group
     "modelsave": "stap %s/model-save.stp", # with sudo, need add current user to stapdev group
     "sqlaexec": "stap %s/sqla-exec.stp", # with sudo, need add current user to stapdev group
+    "rpccount": "stap %s/rpc-count.stp", # with sudo, need add current user to stapdev group
 }
 
 def run(config):
