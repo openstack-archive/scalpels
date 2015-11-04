@@ -1,0 +1,14 @@
+#!/usr/bin/stap
+
+global count = 0;
+global old_count = 0;
+probe python.function.entry {
+	if ((funcname == "execute") && isinstr(filename, "sqlalchemy/engine/base.py") && (lineno == 846)) {
+		count = count + 1;
+	}
+}
+probe timer.ms(1000) {
+	new_count = count - old_count;
+	printf("%d\n", new_count);
+	old_count = count;
+}

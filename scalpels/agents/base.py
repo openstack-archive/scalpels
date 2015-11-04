@@ -88,3 +88,6 @@ def parse_oslolock(out):
 
 def parse_modelsave(out):
     return _parse_count_stream(out, "Model-Save")
+
+def parse_sqlaexec(out):
+    return _parse_count_stream(out, "Sqlalchemy-Execute")
