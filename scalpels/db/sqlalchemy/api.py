@@ -65,12 +65,15 @@ def task_create(results, pids):
     return task
 
 def task_update(task_uuid, results=None, pids=None):
-    task = model_query(models.Task).filter_by(uuid=task_uuid).first()
+    session = get_session()
+    task = model_query(models.Task, session=session).filter_by(uuid=task_uuid).first()
+    _update = dict()
     if results:
-        task.update({"results":results})
+        _update["results"] = results
     if pids:
-        task.update({"pids":pids})
-    task.save()
+        _update["pids"] = pids
+    task.update(_update)
+    task.save(session=session)
     return task
 
 
