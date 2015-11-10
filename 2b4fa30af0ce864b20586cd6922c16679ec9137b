@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Code-Review+2: Kun Huang <gareth@openstacker.org>
+Workflow+1: Kun Huang <gareth@openstacker.org>
+Submitted-by: Jenkins
+Submitted-at: Tue, 10 Nov 2015 03:40:48 +0000
+Reviewed-on: https://review.openstack.org/243398
+Project: openstack/scalpels
+Branch: refs/heads/master
