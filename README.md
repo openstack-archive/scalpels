@@ -9,8 +9,15 @@ This project is prototype now and under development. If you have interests in th
 
 ## Single Node Architecture
 This type of deployment is used as POC in OpenStack community CI.
-..image::doc/source/images/allinone.png
-  :alt:All-in-One deployment
+
+.. image:: doc/source/images/allinone.png
+   :alt: All-in-One deployment
+
+## Multiple Node Architecture
+This is under Designing:
+
+.. image:: doc/source/images/multiple.png
+   :alt: Multiple deployment
 
 ## Ideas
 Each project will have scripts working:
