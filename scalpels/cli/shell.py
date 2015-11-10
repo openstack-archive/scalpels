@@ -50,8 +50,8 @@ def main():
     result.add_argument("--short", action="store_true", dest="short", help="report uuid only")
 
     # agent command
-    agent = subparsers.add_parser("agent")
-    agent.add_argument("-l", "--list", action="store_true", dest="list", help="list all agents")
+    tracer = subparsers.add_parser("tracer")
+    tracer.add_argument("-l", "--list", action="store_true", dest="list", help="list all agents")
 
 
     parser = rootparser.parse_args()
