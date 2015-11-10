@@ -7,6 +7,11 @@ OpenStack is made of multiple Python-based projects. Each project has similiar b
 ## Contribute
 This project is prototype now and under development. If you have interests in this work, please contact @kun_huang, at #openstack-chinese channel.
 
+## Single Node Architecture
+This type of deployment is used as POC in OpenStack community CI.
+..image::doc/source/images/allinone.png
+  :alt:All-in-One deployment
+
 ## Ideas
 Each project will have scripts working:
 
