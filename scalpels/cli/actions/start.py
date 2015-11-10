@@ -4,11 +4,7 @@
 
 import os
 import json
-from scalpels.db import api as db_api
-import subprocess
-import time
-import signal
-from scalpels.agents.base import run_agent
+from scalpels.cli.api import api as agent_api
 
 def _parse_agents_from_args(config):
     parsed_agents = set()
@@ -50,16 +46,4 @@ def run(config):
     print "command start: %s" % config
     agents = _parse_agents_from_args(config)
     agents |= _parse_agents_from_file(config)
-
-    task = db_api.task_create(results=[], pids=[])
-
-    data_dir = db_api.setup_config_get()["data_dir"].rstrip("/")
-    pids = []
-    for ag in agents:
-        ag_exec = agents_map.get(ag) % data_dir
-        if ag_exec:
-            pid = run_agent(task.uuid, ag)
-            pids.append(pid)
-
-    task = db_api.task_update(task.uuid, pids=pids)
-    print "task <%s> runs successfully!" % task.uuid
+    agent_api.start_tracers(agents)

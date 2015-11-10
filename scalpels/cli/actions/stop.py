@@ -5,6 +5,7 @@
 from scalpels.db import api as db_api
 import psutil
 import signal
+from scalpels.cli.api import api as agent_api
 
 LOWEST=8
 
@@ -13,6 +14,8 @@ def get_last_task():
     return last_task
 
 def run(config):
+    agent_api.stop_task(config)
+    """
     uuid = config.get("uuid")
     last = config.get("last")
 
@@ -34,3 +37,4 @@ def run(config):
     for pid in task.pids:
         p = psutil.Process(int(pid))
         p.send_signal(signal.SIGINT)
+    """
