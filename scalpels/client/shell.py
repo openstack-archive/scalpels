@@ -37,11 +37,6 @@ def main():
     report.add_argument("--html", action="store_true", dest="html", help="report html to stdout instead of pretty print")
     report.add_argument("uuid", type=str, default="", nargs="?", help="report the last task")
 
-    # setup re-setup actions
-    setup = subparsers.add_parser("setup")
-    setup.add_argument("-f", "--force", action="store_true", dest="force", help="re-create db")
-    setup.add_argument("-d", "--data_dir", action="store", dest="data_dir",  help="data dir where to find script resources", required=False)
-
     # setup sca result --list
     result = subparsers.add_parser("result")
     result.add_argument("-l", "--list", action="store_true", dest="list", help="list all results from db")
