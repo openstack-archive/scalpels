@@ -2,11 +2,9 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from scalpels.agents.server import server
 
 def main():
-    server.start()
-    server.wait()
+    raise NotImplementedError()
 
 if __name__ == "__main__":
     main()
