@@ -10,7 +10,7 @@ def run_agent(task_uuid, ag):
     """
     python <path-to-dir>/agent.py <uuid> mysql
     """
-    cmd = "python %s/agent.py %s %s" % (data_dir, task_uuid, ag)
+    cmd = "sca-tracer %s %s" % (task_uuid, ag)
     ag = subprocess.Popen(cmd.split())
     return ag.pid
 
