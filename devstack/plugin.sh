@@ -16,6 +16,15 @@ function init_scalpels {
     install -t $SCALPELS_DATA_DIR $SCALPELS_DIR/scripts/*
 }
 
+function start_scalpels {
+    sca-manage setup -d /opt/stack/data/scalpels/scripts
+    run_process scalpels "sca-agent"
+}
+
+function stop_scalpels {
+    stop_process scalpels
+}
+
 function configure_scalpels {
     echo "nothing need config now."
 }
@@ -85,12 +94,13 @@ if is_service_enabled scalpels; then
         # Initialize and start the scalpels service
         echo_summary "Initializing scalpels"
         init_scalpels
+        start_scalpels
     fi
 
     if [[ "$1" == "unstack" ]]; then
         # Shut down scalpels services
         # no-op
-        :
+        stop_scalpels
     fi
 
     if [[ "$1" == "clean" ]]; then

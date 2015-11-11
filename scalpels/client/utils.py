@@ -24,11 +24,11 @@ tracers_map = {
 
 
 def generate_result_html(result):
-    if result.rtype == "stream":
+    if result["rtype"] == "stream":
         tmpl_dir  = os.path.dirname(templates.__file__)
         lookup = TemplateLookup(directories=[tmpl_dir])
         t = lookup.get_template("line-chart.mako")
-        print t.render(**result.__dict__)
+        print t.render(**result)
 
 def generate_multiple_result_html(results):
     tmpl_dir  = os.path.dirname(templates.__file__)
