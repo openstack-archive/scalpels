@@ -84,6 +84,10 @@ class TaskEndpoint(object):
         return {"uuid":task.uuid,
                 "results":task.results,}
 
+class ResultEndpoint(object):
+
+    target = oslo_messaging.Target(topic="test", version='1.0')
+
     def get_result(self, ctx, uuid):
         ret = db_api.result_get(uuid)
         # TODO object
@@ -95,12 +99,22 @@ class TaskEndpoint(object):
                 "data":ret.data,
                }
 
+    def get_all_results(self, ctx):
+        rets = db_api.get_all_results()
+        # TODO object
+        return [{"id":ret.id,
+                "uuid":ret.uuid,
+                "name":ret.name,
+                "unit":ret.unit,
+                "data":ret.data} for ret in rets]
+
 transport = oslo_messaging.get_transport(cfg.CONF)
 target = oslo_messaging.Target(topic='test', server='localhost')
 endpoints = [
     ServerControlEndpoint(None),
     TraceEndpoint(),
     TaskEndpoint(),
+    ResultEndpoint(),
 ]
 server = oslo_messaging.get_rpc_server(transport, target, endpoints,
                                        executor='blocking')

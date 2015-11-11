@@ -2,8 +2,8 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from scalpels.db import api as db_api
 from scalpels.cli.actions import report
+from scalpels.cli.api import api as agent_api
 
 def run(config):
     """
@@ -13,7 +13,7 @@ def run(config):
     list and html: generate_multiple_result_html
     """
     if config.get("list"):
-        rets = db_api.get_all_results()
+        rets = agent_api.get_all_results()
         if config.get("html"):
             report.generate_multiple_result_html(rets)
         elif config.get("short"):
@@ -22,7 +22,7 @@ def run(config):
         else:
             map(report.pprint_result, rets)
     elif config.get("uuid"):
-        ret = db_api.result_get(config["uuid"])
+        ret = agent_api.get_result(config["uuid"])
         if config.get("html"):
             report.generate_result_html(ret)
         else:

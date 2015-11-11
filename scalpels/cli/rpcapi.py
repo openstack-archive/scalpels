@@ -25,5 +25,8 @@ class RPCAPI(object):
     def get_result(self, ctxt={}, uuid=None):
         return self._client.call(ctxt, "get_result", uuid=uuid)
 
+    def get_all_results(self, ctxt={}):
+        return self._client.call(ctxt, "get_all_results")
+
 transport = messaging.get_transport(cfg.CONF)
 rpcapi = RPCAPI(transport)
