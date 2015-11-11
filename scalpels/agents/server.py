@@ -27,7 +27,6 @@ class TraceEndpoint(object):
         return traces_map
 
     def start_tracers(self, ctx, tracers):
-        print locals()
         task = db_api.task_create(results=[], pids=[])
 
         pids = []
@@ -36,7 +35,7 @@ class TraceEndpoint(object):
             pids.append(pid)
 
         task = db_api.task_update(task.uuid, pids=pids)
-        print "task <%s> runs successfully!" % task.uuid
+        print "[LOG] task <%s> runs successfully!" % task.uuid
 
 class TaskEndpoint(object):
 
@@ -44,21 +43,15 @@ class TaskEndpoint(object):
 
     LOWEST = 8
 
-    def get_last_task(self):
-        # XXX put it utils?
-        last_task = db_api.task_get_last()
-        return last_task
-
     def stop_task(self, ctx, uuid):
-
-        print "command stop: %s" % ctx
-        print "task: <%s>" % uuid
+        print "[LOG] stopping task: %s" % uuid
         task = db_api.task_get(uuid)
         for pid in task.pids:
             p = psutil.Process(int(pid))
             p.send_signal(signal.SIGINT)
 
     def get_task(self, ctx, uuid, fuzzy):
+        print "[LOG] reading task: %s" % uuid
         task = db_api.task_get(uuid, fuzzy)
         # TODO object
         return {"uuid":task.uuid,
@@ -66,6 +59,7 @@ class TaskEndpoint(object):
 
     def get_latest_task(self, ctx):
         task = db_api.task_get_last()
+        print "[LOG] reading latest task: %s" % task.uuid
         # TODO object
         return {"uuid":task.uuid,
                 "results":task.results,}
@@ -75,6 +69,7 @@ class ResultEndpoint(object):
     target = oslo_messaging.Target(topic="test", version='1.0')
 
     def get_result(self, ctx, uuid):
+        print "[LOG] reading result: %s" % uuid
         ret = db_api.result_get(uuid)
         # TODO object
         return {
@@ -86,6 +81,7 @@ class ResultEndpoint(object):
                }
 
     def get_all_results(self, ctx):
+        print "[LOG] reading all results"
         rets = db_api.get_all_results()
         # TODO object
         return [{"id":ret.id,

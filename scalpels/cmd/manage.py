@@ -6,7 +6,7 @@ import os
 import argparse
 from scalpels.db import api as db_api
 
-def get_config(parser):
+def get_setup_config(parser):
     sc = {}
     # /opt/stack/data/ for devstack case
     # /opt/stack/
@@ -21,9 +21,8 @@ def get_config(parser):
     return sc
 
 def do_setup(parser):
-    print "command setup: %s" % parser
-    sc = get_config(parser)
-    print "saving setup config: %s" % sc
+    sc = get_setup_config(parser)
+    print "Setup config: %s" % sc
     if parser.force:
         db_api.db_drop()
         db_api.db_create(sc)

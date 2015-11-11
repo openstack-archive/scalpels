@@ -6,7 +6,7 @@ from scalpels.client.api import api as agent_api
 
 
 def run(config):
-    task = agent_api.try_get_task_from_config(config)
+    print "command stop: %s" % config
 
-    print "stopping task: <%s>" % task["uuid"]
+    task = agent_api.try_get_task_from_config(config)
     agent_api.stop_task(task["uuid"])
