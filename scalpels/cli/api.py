@@ -18,4 +18,13 @@ class API(object):
     def stop_task(self, config):
         rpcapi.stop_task(config)
 
+    def get_task(self, uuid, fuzzy=False):
+        return rpcapi.get_task(uuid=uuid, fuzzy=fuzzy)
+
+    def get_latest_task(self):
+        return rpcapi.get_latest_task()
+
+    def get_result(self, uuid):
+        return rpcapi.get_result(uuid=uuid)
+
 api = API()

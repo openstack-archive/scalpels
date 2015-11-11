@@ -16,5 +16,14 @@ class RPCAPI(object):
     def stop_task(self, ctxt={}):
         self._client.cast(ctxt, "stop_task")
 
+    def get_task(self, ctxt={}, uuid=None, fuzzy=False):
+        return self._client.call(ctxt, "get_task", uuid=uuid, fuzzy=fuzzy)
+
+    def get_latest_task(self, ctxt={}):
+        return self._client.call(ctxt, "get_latest_task")
+
+    def get_result(self, ctxt={}, uuid=None):
+        return self._client.call(ctxt, "get_result", uuid=uuid)
+
 transport = messaging.get_transport(cfg.CONF)
 rpcapi = RPCAPI(transport)

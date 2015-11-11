@@ -3,8 +3,6 @@
 # Author: Kun Huang <academicgareth@gmail.com>
 
 from scalpels.db import api as db_api
-import psutil
-import signal
 from scalpels.cli.api import api as agent_api
 
 LOWEST=8

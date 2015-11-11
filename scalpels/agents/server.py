@@ -72,6 +72,29 @@ class TaskEndpoint(object):
             p = psutil.Process(int(pid))
             p.send_signal(signal.SIGINT)
 
+    def get_task(self, ctx, uuid, fuzzy):
+        task = db_api.task_get(uuid, fuzzy)
+        # TODO object
+        return {"uuid":task.uuid,
+                "results":task.results,}
+
+    def get_latest_task(self, ctx):
+        task = db_api.task_get_last()
+        # TODO object
+        return {"uuid":task.uuid,
+                "results":task.results,}
+
+    def get_result(self, ctx, uuid):
+        ret = db_api.result_get(uuid)
+        # TODO object
+        return {
+                "id":ret.id,
+                "uuid":ret.uuid,
+                "name":ret.name,
+                "unit":ret.unit,
+                "data":ret.data,
+               }
+
 transport = oslo_messaging.get_transport(cfg.CONF)
 target = oslo_messaging.Target(topic='test', server='localhost')
 endpoints = [
