@@ -8,7 +8,7 @@ import importlib
 
 def run(parser):
     config = parser.__dict__
-    modstr = "scalpels.cli.actions.%s" % config.pop("action")
+    modstr = "scalpels.client.actions.%s" % config.pop("action")
     mod = importlib.import_module(modstr)
     func = getattr(mod, "run")
     return func(config)

@@ -2,8 +2,8 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from scalpels.cli.actions import report
-from scalpels.cli.api import api as agent_api
+from scalpels.client.actions import report
+from scalpels.client.api import api as agent_api
 
 def run(config):
     """

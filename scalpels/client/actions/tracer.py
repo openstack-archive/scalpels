@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from scalpels.cli.api import api as agent_api
+from scalpels.client.api import api as agent_api
 from prettytable import PrettyTable
 
 

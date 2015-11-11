@@ -3,8 +3,8 @@
 # Author: Kun Huang <academicgareth@gmail.com>
 
 
-from scalpels.cli.rpcapi import rpcapi
-from scalpels.cli.utils import UUID_LOWEST_SUPPORT
+from scalpels.client.rpcapi import rpcapi
+from scalpels.client.utils import UUID_LOWEST_SUPPORT
 
 class API(object):
     def __init__(self):

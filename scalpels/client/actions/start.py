@@ -4,7 +4,7 @@
 
 import os
 import json
-from scalpels.cli.api import api as agent_api
+from scalpels.client.api import api as agent_api
 
 def _parse_agents_from_args(config):
     parsed_agents = set()

@@ -2,9 +2,9 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from scalpels.cli.api import api as agent_api
-from scalpels.cli.utils import generate_multiple_result_html
-from scalpels.cli.utils import pprint_result
+from scalpels.client.api import api as agent_api
+from scalpels.client.utils import generate_multiple_result_html
+from scalpels.client.utils import pprint_result
 
 
 def run(config):
