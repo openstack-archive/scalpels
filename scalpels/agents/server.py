@@ -23,8 +23,8 @@ class TraceEndpoint(object):
     def tracer_list(self, ctx):
         # TODO db_api
         # XXX ctx required?
-        from scalpels.client.utils import traces_map
-        return traces_map
+        from scalpels.client.utils import tracers_map
+        return tracers_map
 
     def start_tracers(self, ctx, tracers):
         task = db_api.task_create(results=[], pids=[])
@@ -78,6 +78,7 @@ class ResultEndpoint(object):
                 "name":ret.name,
                 "unit":ret.unit,
                 "data":ret.data,
+                "rtype":ret.rtype,
                }
 
     def get_all_results(self, ctx):
@@ -88,7 +89,8 @@ class ResultEndpoint(object):
                 "uuid":ret.uuid,
                 "name":ret.name,
                 "unit":ret.unit,
-                "data":ret.data} for ret in rets]
+                "data":ret.data,
+                "rtype":ret.rtype} for ret in rets]
 
 transport = oslo_messaging.get_transport(cfg.CONF)
 target = oslo_messaging.Target(topic='test', server='localhost')
