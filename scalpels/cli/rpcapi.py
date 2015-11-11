@@ -13,8 +13,8 @@ class RPCAPI(object):
     def start_tracers(self, ctxt={}, tracers=None):
         self._client.cast(ctxt, "start_tracers", tracers=tracers)
 
-    def stop_task(self, ctxt={}):
-        self._client.cast(ctxt, "stop_task")
+    def stop_task(self, ctxt={}, uuid=None):
+        self._client.cast(ctxt, "stop_task", uuid=uuid)
 
     def get_task(self, ctxt={}, uuid=None, fuzzy=False):
         return self._client.call(ctxt, "get_task", uuid=uuid, fuzzy=fuzzy)

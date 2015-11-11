@@ -15,8 +15,8 @@ class API(object):
     def start_tracers(self, tracers):
         rpcapi.start_tracers(tracers=tracers)
 
-    def stop_task(self, config):
-        rpcapi.stop_task(config)
+    def stop_task(self, uuid):
+        rpcapi.stop_task(uuid=uuid)
 
     def get_task(self, uuid, fuzzy=False):
         return rpcapi.get_task(uuid=uuid, fuzzy=fuzzy)

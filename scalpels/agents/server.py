@@ -45,29 +45,15 @@ class TaskEndpoint(object):
     LOWEST = 8
 
     def get_last_task(self):
-        # XXX put it tu utils?
+        # XXX put it utils?
         last_task = db_api.task_get_last()
         return last_task
 
-    def stop_task(self, ctx):
-        uuid = ctx.get("uuid")
-        last = ctx.get("last")
-
-        if last and uuid:
-            raise ValueError("can't assign last and uuid togther")
-        elif not last and not uuid:
-            task = self.get_last_task()
-        elif last:
-            task = self.get_last_task()
-        elif uuid and len(uuid) < self.LOWEST:
-            print "at least %d to find a task" % self.LOWEST
-            return
-        else:
-            # len(uuid) > LOWEST
-            task = db_api.task_get(uuid, fuzzy=True)
+    def stop_task(self, ctx, uuid):
 
         print "command stop: %s" % ctx
-        print "task: <%s>" % task.uuid
+        print "task: <%s>" % uuid
+        task = db_api.task_get(uuid)
         for pid in task.pids:
             p = psutil.Process(int(pid))
             p.send_signal(signal.SIGINT)

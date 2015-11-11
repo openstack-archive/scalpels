@@ -12,4 +12,19 @@ def get_last_task():
     return last_task
 
 def run(config):
-    agent_api.stop_task(config)
+    uuid = config.get("uuid")
+    last = config.get("last")
+
+    if last and uuid:
+        raise ValueError("can't assign last and uuid togther")
+    elif not last and not uuid:
+        task = agent_api.get_latest_task()
+    elif last:
+        task = agent_api.get_latest_task()
+    elif uuid and len(uuid) < LOWEST:
+        print "at least %d to find a task" % LOWEST
+        return
+    else:
+        # len(uuid) > LOWEST
+        task = agent_api.get_task(uuid, fuzzy=True)
+    agent_api.stop_task(task["uuid"])
