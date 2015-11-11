@@ -2,8 +2,10 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from scalpels.client.actions import report
 from scalpels.client.api import api as agent_api
+from scalpels.client.utils import generate_multiple_result_html
+from scalpels.client.utils import pprint_result
+from scalpels.client.utils import generate_result_html
 
 def run(config):
     """
@@ -15,15 +17,15 @@ def run(config):
     if config.get("list"):
         rets = agent_api.get_all_results()
         if config.get("html"):
-            report.generate_multiple_result_html(rets)
+            generate_multiple_result_html(rets)
         elif config.get("short"):
             for ret in rets:
-                print ret.uuid
+                print ret["uuid"]
         else:
-            map(report.pprint_result, rets)
+            map(pprint_result, rets)
     elif config.get("uuid"):
         ret = agent_api.get_result(config["uuid"])
         if config.get("html"):
-            report.generate_result_html(ret)
+            generate_result_html(ret)
         else:
-            report.pprint_result(ret)
+            pprint_result(ret)
