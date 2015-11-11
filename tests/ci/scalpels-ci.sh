@@ -2,7 +2,8 @@
 # Author: Kun Huang <academicgareth@gmail.com>
 
 echo "Hello, scalpels ci"
-sca setup -d /opt/stack/data/scalpels/scripts
+sca-manage setup -d /opt/stack/data/scalpels/scripts
+sca-agent 1> /dev/null &
 source /opt/stack/new/devstack/openrc admin admin
 
 function debug_msg {
@@ -13,7 +14,7 @@ function debug_msg {
 }
 
 function basic_test {
-    sca agent -l
+    sca tracer -l
     sca start -a rpc -a rabbit -a traffic
 
     sca load --storm
@@ -53,4 +54,5 @@ function stap_test {
 debug_msg
 basic_test
 report_html_test
+sca-manage stop
 stap_test
