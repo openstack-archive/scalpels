@@ -18,7 +18,7 @@ def run(config):
             report.generate_multiple_result_html(rets)
         elif config.get("short"):
             for ret in rets:
-                print ret.uuid
+                print ret["uuid"]
         else:
             map(report.pprint_result, rets)
     elif config.get("uuid"):
