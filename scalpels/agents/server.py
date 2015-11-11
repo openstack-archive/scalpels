@@ -23,8 +23,8 @@ class TraceEndpoint(object):
     def tracer_list(self, ctx):
         # TODO db_api
         # XXX ctx required?
-        from scalpels.cli.actions.start import agents_map
-        return agents_map
+        from scalpels.cli.utils import traces_map
+        return traces_map
 
     def start_tracers(self, ctx, tracers):
         print locals()

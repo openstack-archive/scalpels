@@ -18,7 +18,7 @@ python <path-to-dir>/agent.py <uuid> mysql
 
 def read_from_ag(ag):
     # wrong impl. here, need read from config or db instead
-    from scalpels.cli.actions.start import agents_map
+    from scalpels.cli.utils import tracers_map as agents_map
     data_dir = db_api.setup_config_get()["data_dir"].rstrip("/")
     return agents_map.get(ag) % data_dir
 

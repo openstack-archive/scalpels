@@ -15,7 +15,7 @@ def run(config):
             continue
         loadcall(config)
 
-def get_creds_from_env():
+def _get_creds_from_env():
     user = os.environ.get("OS_USERNAME")
     pw = os.environ.get("OS_PASSWORD")
     tenant = os.environ.get("OS_TENANT_NAME")
@@ -23,7 +23,7 @@ def get_creds_from_env():
     return (user, pw, tenant, auth_url)
 
 def nova_boot_bulk():
-    creds = get_creds_from_env()
+    creds = _get_creds_from_env()
     if None in creds:
         raise ValueError("can't find all necessary creds from env: %s" % creds)
     nova = client.Client(2, *creds)
