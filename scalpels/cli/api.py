@@ -27,4 +27,7 @@ class API(object):
     def get_result(self, uuid):
         return rpcapi.get_result(uuid=uuid)
 
+    def get_all_results(self):
+        return rpcapi.get_all_results()
+
 api = API()
