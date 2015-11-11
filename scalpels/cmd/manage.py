@@ -4,6 +4,8 @@
 
 import os
 import argparse
+import psutil
+import signal
 from scalpels.db import api as db_api
 
 def get_setup_config(parser):
@@ -29,6 +31,15 @@ def do_setup(parser):
     else:
         db_api.db_create(sc)
 
+def do_stop(parser):
+    for p in psutil.process_iter():
+        if p.as_dict()["cmdline"] and "sca-agent" in " ".join(p.cmdline):
+            print "killing process %d, %s" % (p.pid, p.cmdline)
+            p.send_signal(signal.SIGINT)
+            return
+    print "Can't find sca-agent process"
+    return
+
 def main():
     rootparser = argparse.ArgumentParser(description="main entry point for scalpels")
     subparsers = rootparser.add_subparsers(title="actions", dest="action")
@@ -38,10 +49,15 @@ def main():
     setup.add_argument("-f", "--force", action="store_true", dest="force", help="re-create db")
     setup.add_argument("-d", "--data_dir", action="store", dest="data_dir",  help="data dir where to find script resources", required=False)
 
+    stop = subparsers.add_parser("stop")
+
     parser = rootparser.parse_args()
 
     if parser.action == "setup":
         do_setup(parser)
+
+    if parser.action == "stop":
+        do_stop(parser)
 
 if __name__ == "__main__":
     main()
