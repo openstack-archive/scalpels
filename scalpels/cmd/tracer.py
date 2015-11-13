@@ -38,6 +38,7 @@ def main():
             if not len(t):
                 break
             _t = (time.time(), t.strip())
+            print "[LOG] get %s" % _t
             out.append(_t)
     except KeyboardInterrupt:
         pass
