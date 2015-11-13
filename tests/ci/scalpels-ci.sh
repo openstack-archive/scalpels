@@ -4,6 +4,8 @@
 echo "Hello, scalpels ci"
 source /opt/stack/new/devstack/openrc admin admin
 
+timeout 30 bash /opt/stack/data/scalpels/scripts/port-input-traffic.sh 5672
+
 function debug_msg {
     sudo netstat -nltp
     sudo ps axf

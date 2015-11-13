@@ -32,6 +32,7 @@ class TraceEndpoint(object):
         pids = []
         for tr in tracers:
             pid = run_agent(task.uuid, tr)
+            print "[LOG] saving pid %s" % pid
             pids.append(pid)
 
         task = db_api.task_update(task.uuid, pids=pids)
@@ -47,6 +48,7 @@ class TaskEndpoint(object):
         print "[LOG] stopping task: %s" % uuid
         task = db_api.task_get(uuid)
         for pid in task.pids:
+            print "[LOG] interupt process %s" % pid
             p = psutil.Process(int(pid))
             p.send_signal(signal.SIGINT)
 
