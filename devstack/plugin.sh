@@ -8,6 +8,12 @@ SCALPELS_DATA_DIR=$DATA_DIR/scalpels/scripts
 function install_scalpels {
     git_clone $SCALPELS_REPO $SCALPELS_DIR $SCALPELS_BRANCH
     setup_develop $SCALPELS_DIR
+
+    local tempfile=`mktemp`
+    echo "$STACK_USER ALL=(ALL) NOPASSWD:ALL" >$tempfile
+    chmod 0440 $tempfile
+    sudo chown root:root $tempfile
+    sudo mv $tempfile /etc/sudoers.d/scalpels-tracer
 }
 
 function init_scalpels {
