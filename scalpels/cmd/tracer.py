@@ -29,6 +29,7 @@ def read_from_ag(ag):
 def main():
     task_uuid, ag = sys.argv[1], sys.argv[2]
     cmd = read_from_ag(ag)
+    print "[LOG] running CMD: %s" % cmd
 
     worker = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     out = []
@@ -38,6 +39,7 @@ def main():
             if not len(t):
                 break
             _t = (time.time(), t.strip())
+            print "[LOG] get %s" % _t
             out.append(_t)
     except KeyboardInterrupt:
         pass
