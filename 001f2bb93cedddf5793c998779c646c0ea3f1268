@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Code-Review+2: Kun Huang <gareth@openstacker.org>
+Workflow+1: Kun Huang <gareth@openstacker.org>
+Code-Review+1: Margaret Frances <margaret_frances@cable.comcast.com>
+Submitted-by: Jenkins
+Submitted-at: Fri, 13 Nov 2015 13:50:15 +0000
+Reviewed-on: https://review.openstack.org/245041
+Project: openstack/scalpels
+Branch: refs/heads/master
