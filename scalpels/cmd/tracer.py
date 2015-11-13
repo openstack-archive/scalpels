@@ -29,6 +29,7 @@ def read_from_ag(ag):
 def main():
     task_uuid, ag = sys.argv[1], sys.argv[2]
     cmd = read_from_ag(ag)
+    print "[LOG] running CMD: %s" % cmd
 
     worker = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     out = []
@@ -38,6 +39,7 @@ def main():
             if not len(t):
                 break
             _t = (time.time(), t.strip())
+            print "[LOG] get %s" % _t[1]
             out.append(_t)
     except KeyboardInterrupt:
         pass
@@ -59,7 +61,9 @@ def main():
         results = copy(task.results)
         for ret in parse_func(out):
             ret = db_api.result_create(**ret)
+            print "[LOG] appending result with id %s" % ret.uuid
             results.append(ret.uuid)
+        print "[LOG] update tas with result %s" % task_uuid
         db_api.task_update(task_uuid, results=results)
         time.sleep(2)
     co.stop()
