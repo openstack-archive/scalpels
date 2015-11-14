@@ -20,34 +20,33 @@ TODO:
     config key-word arguments for each tracer
 """
 
+worker_pid = None
+task_uuid = None
+out = None
+ag = None
+
 def read_from_ag(ag):
     # wrong impl. here, need read from config or db instead
     from scalpels.client.utils import tracers_map as agents_map
     data_dir = db_api.setup_config_get()["data_dir"].rstrip("/")
     return agents_map.get(ag) % data_dir
 
-def main():
-    task_uuid, ag = sys.argv[1], sys.argv[2]
-    cmd = read_from_ag(ag)
-    print "[LOG] running CMD: %s" % cmd
+def handle_int(signal, frame):
+    print "[LOG] xxx is interupted"
+    stop_tracer()
+    save_result_to_task()
+    sys.exit(0)
 
-    worker = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
-    out = []
-    try:
-        while True:
-            t = worker.stdout.readline()
-            if not len(t):
-                break
-            _t = (time.time(), t.strip())
-            out.append(_t)
-    except KeyboardInterrupt:
-        print "[LOG] %s is interupted" % ag
-
+def stop_tracer():
+    global worker_pid
     # psutil is much more professional... I have to use it instead
     # this kill is to script process
-    worker_p = psutil.Process(worker.pid)
+    worker_p = psutil.Process(worker_pid)
     worker_p.send_signal(signal.SIGINT)
 
+def save_result_to_task():
+    global task_uuid
+    global out
     parse_func = getattr(base, "parse_%s" % ag)
 
     # TODO file lock is okay in localhost, here need redis for distributed
@@ -67,5 +66,27 @@ def main():
         time.sleep(2)
     co.stop()
 
+def main():
+    global worker_pid
+    global task_uuid
+    global out
+    global ag
+    task_uuid, ag = sys.argv[1], sys.argv[2]
+    out = []
+    cmd = read_from_ag(ag)
+    print "[LOG] running CMD: %s" % cmd
+
+    worker = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
+    worker_pid = worker.pid
+    while True:
+        t = worker.stdout.readline()
+        if not len(t):
+            break
+        _t = (time.time(), t.strip())
+        out.append(_t)
+
+
+
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, handle_int)
     main()
