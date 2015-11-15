@@ -24,6 +24,13 @@ This is under Designing:
 .. image:: doc/source/images/multiple.png
    :alt: Multiple deployment
 
+Agent-Tracer-Worker
+===================
+The relationship is:
+
+.. image:: doc/source/images/agent-tracer-worker.png
+   :alt: agent-tracer-worker.png
+
 Ideas
 =====
 Each project will have scripts working:
