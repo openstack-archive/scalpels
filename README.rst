@@ -10,6 +10,10 @@ Contribute
 ==========
 This project is prototype now and under development. If you have interests in this work, please contact @kun_huang, at #openstack-chinese channel.
 
+Mission
+=======
+Scalpels is kind of "debugfs" for OpenStack. It gathers data from number of tracers like proc or systemtap which could be used to quantize preformance under workloads.
+
 Single Node Architecture
 ========================
 This type of deployment is used as POC in OpenStack community CI.
