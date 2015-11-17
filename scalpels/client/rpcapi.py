@@ -28,5 +28,8 @@ class RPCAPI(object):
     def get_all_results(self, ctxt={}):
         return self._client.call(ctxt, "get_all_results")
 
+    def register_tracer(self, ctxt={}, tracer_opts=None):
+        self._client.cast(ctxt, "register_tracer", tracer_opts=tracer_opts)
+
 transport = messaging.get_transport(cfg.CONF)
 rpcapi = RPCAPI(transport)

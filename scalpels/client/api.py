@@ -44,4 +44,12 @@ class API(object):
         else: # no matter whether last is set
             return self.get_latest_task()
 
+    def register_tracer(self, tracer_opts):
+        if "name" not in tracer_opts:
+            raise ValueError("tracer must have a name")
+        if "tpl" not in tracer_opts:
+            raise ValueError("tracer must have a name")
+        return rpcapi.register_tracer(tracer_opts=tracer_opts)
+
+
 api = API()

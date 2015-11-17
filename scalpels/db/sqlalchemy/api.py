@@ -115,3 +115,13 @@ def setup_config_get():
 def get_all_results():
     rets = model_query(models.Result).all()
     return rets
+
+def register_tracer(name, template):
+    tracer = models.Tracer()
+    tracer.update({"name":name, "template": template})
+    tracer.save()
+    return tracer
+
+def tracer_list():
+    tracers = model_query(models.Tracer).all()
+    return tracers

@@ -50,3 +50,11 @@ class Setup(BASE, ScalpelsBase):
     __tablename__ = "setup"
     id = Column(Integer, primary_key=True, autoincrement=True)
     config = Column(JSONEncodedData, nullable=False)
+
+class Tracer(BASE, ScalpelsBase):
+    __tablename__ = "tracer"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(20), nullable=False, unique=True)
+    template = Column(String(20), nullable=False)
+    # yes for running, no for not
+    status = Column(String(20), default=lambda : "No",  nullable=False)

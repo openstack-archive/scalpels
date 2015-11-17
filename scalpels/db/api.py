@@ -56,3 +56,9 @@ def setup_config_get():
 
 def get_all_results():
     return IMPL.get_all_results()
+
+def register_tracer(name, template):
+    return IMPL.register_tracer(name, template)
+
+def tracer_list():
+    return IMPL.tracer_list()

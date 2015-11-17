@@ -21,10 +21,12 @@ class TraceEndpoint(object):
     target = oslo_messaging.Target(topic="test", version='1.0')
 
     def tracer_list(self, ctx):
-        # TODO db_api
-        # XXX ctx required?
-        from scalpels.client.utils import tracers_map
-        return tracers_map
+        tracers = db_api.tracer_list()
+        print tracers
+        ret = {}
+        for tr in tracers:
+            ret[tr.name] = tr.template
+        return ret
 
     def start_tracers(self, ctx, tracers):
         task = db_api.task_create(results=[], pids=[])
@@ -37,6 +39,10 @@ class TraceEndpoint(object):
 
         task = db_api.task_update(task.uuid, pids=pids)
         print "[LOG] task <%s> runs successfully!" % task.uuid
+
+    def register_tracer(self, ctx, tracer_opts):
+        db_api.register_tracer(name=tracer_opts["name"], template=tracer_opts["tpl"])
+        print "[LOG] registering tracer %(name)s: %(tpl)s" % tracer_opts
 
 class TaskEndpoint(object):
 
