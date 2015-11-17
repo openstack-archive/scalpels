@@ -40,7 +40,7 @@ function report_html_test {
 
 function ubuntu_stap_test {
     scal_ci=$BASE/new/scalpels/tests/ci/
-    sudo stap -vvv $scal_ci/pyfunc.stp -c "$DATA_DIR/cpython_build/bin/python $scal_ci/test-func.py"
+    sudo stap -vv $scal_ci/pyfunc.stp -c "$DATA_DIR/cpython_build/bin/python $scal_ci/test-func.py"
 }
 
 function stap_test {

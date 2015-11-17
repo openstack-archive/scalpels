@@ -42,8 +42,6 @@ class TaskEndpoint(object):
 
     target = oslo_messaging.Target(topic="test", version='1.0')
 
-    LOWEST = 8
-
     def stop_task(self, ctx, uuid):
         print "[LOG] stopping task: %s" % uuid
         task = db_api.task_get(uuid)
