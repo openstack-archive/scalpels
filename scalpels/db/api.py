@@ -62,3 +62,9 @@ def register_tracer(name, template):
 
 def tracer_list():
     return IMPL.tracer_list()
+
+def update_config(data_opts):
+    return IMPL.update_config(data_opts)
+
+def get_config():
+    return IMPL.get_config()

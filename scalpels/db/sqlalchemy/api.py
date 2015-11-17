@@ -8,6 +8,7 @@ from scalpels.db.sqlalchemy import BASE
 from scalpels.db.sqlalchemy import models
 from oslo_db.sqlalchemy import session as db_session
 from oslo_db.sqlalchemy import utils as oslodbsqa_utils
+from copy import deepcopy as copy
 
 CONF = cfg.CONF
 
@@ -125,3 +126,16 @@ def register_tracer(name, template):
 def tracer_list():
     tracers = model_query(models.Tracer).all()
     return tracers
+
+def update_config(data_opts):
+    session = get_session()
+    config = model_query(models.Setup, session=session).first()
+    new = copy(config.config)
+    new.update(data_opts)
+    config.update({"config":new})
+    config.save(session=session)
+    return config
+
+def get_config():
+    config = model_query(models.Setup).first()
+    return config.config

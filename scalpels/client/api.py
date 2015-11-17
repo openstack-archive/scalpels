@@ -49,7 +49,13 @@ class API(object):
             raise ValueError("tracer must have a name")
         if "tpl" not in tracer_opts:
             raise ValueError("tracer must have a name")
-        return rpcapi.register_tracer(tracer_opts=tracer_opts)
+        rpcapi.register_tracer(tracer_opts=tracer_opts)
+
+    def update_config(self, data_opts):
+        rpcapi.update_config(data_opts=data_opts)
+
+    def get_config(self):
+        return rpcapi.get_config()
 
 
 api = API()

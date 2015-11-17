@@ -20,30 +20,35 @@ def get_default_tracer_dir():
     default_data_dir = os.path.join(scalpels_package, "scripts")
     return default_data_dir
 
-def do_setup(parser):
-    data_opts = dict(parser.data_opts) if parser.data_opts else None
-    tracer_opts = dict(parser.tracer_opts) if parser.tracer_opts else None
-    if data_opts and data_opts.get("tracer_path") is None: # "" is meaningful sometime
-        data_opts["tracer_path"] = get_default_tracer_dir()
-    setup_config = {"data_opts":data_opts,
-                    "force":parser.force,
-                    "stat":parser.stat,
-                    "tracer":tracer_opts}
-    print "Setup config: %s" % setup_config
+def do_db(parser):
+    setup_config = {"tracer_path":get_default_tracer_dir()}
     if parser.force:
         print "recreating database"
         db_api.db_drop()
         db_api.db_create(setup_config)
-    elif parser.data_opts is None and parser.tracer_opts is None and parser.stat is False:
+    else:
         print "creating database"
         db_api.db_create(setup_config)
+
+def do_setup(parser):
+    data_opts = dict(parser.data_opts) if parser.data_opts else None
+
+    if data_opts:
+        agent_api.update_config(data_opts)
+
+    tracer_opts = dict(parser.tracer_opts) if parser.tracer_opts else None
 
     if tracer_opts:
         print "registering tracer %s" % tracer_opts["name"]
         agent_api.register_tracer(tracer_opts)
 
     if parser.stat:
-        raise NotImplementedError()
+        config = agent_api.get_config()
+        from prettytable import PrettyTable
+        t = PrettyTable(["key", "value"])
+        for k,v in config.items():
+            t.add_row([k, v])
+        print t
 
 def do_stop(parser):
     # TODO call rpc server's stop API instead
@@ -59,9 +64,12 @@ def main():
     rootparser = argparse.ArgumentParser(description="main entry point for scalpels")
     subparsers = rootparser.add_subparsers(title="actions", dest="action")
 
+    # db actions
+    db = subparsers.add_parser("db-create")
+    db.add_argument("-f", "--force", action="store_true", dest="force", help="re-create db")
+
     # setup re-setup actions
     setup = subparsers.add_parser("setup")
-    setup.add_argument("-f", "--force", action="store_true", dest="force", help="re-create db")
     setup.add_argument("-d", "--data_opts", action="append", dest="data_opts", type=lambda kv:kv.split("="), help="data opts for tracer variables", required=False)
     setup.add_argument("-t", "--tracer_opts", action="append", dest="tracer_opts", type=lambda kv:kv.split("="), help="tracer opts for registering", required=False)
     setup.add_argument("-s", "--stat", action="store_true", dest="stat", help="setup stats for this agent")
@@ -69,6 +77,9 @@ def main():
     stop = subparsers.add_parser("stop")
 
     parser = rootparser.parse_args()
+
+    if parser.action == "db-create":
+        do_db(parser)
 
     if parser.action == "setup":
         do_setup(parser)

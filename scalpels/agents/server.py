@@ -22,7 +22,6 @@ class TraceEndpoint(object):
 
     def tracer_list(self, ctx):
         tracers = db_api.tracer_list()
-        print tracers
         ret = {}
         for tr in tracers:
             ret[tr.name] = tr.template
@@ -98,6 +97,15 @@ class ResultEndpoint(object):
                 "data":ret.data,
                 "rtype":ret.rtype} for ret in rets]
 
+class ConfigEndpoint(object):
+
+    target = oslo_messaging.Target(topic="test", version='1.0')
+    def update_config(self, ctx, data_opts):
+        db_api.update_config(data_opts)
+
+    def get_config(self, ctx):
+        return db_api.get_config()
+
 transport = oslo_messaging.get_transport(cfg.CONF)
 target = oslo_messaging.Target(topic='test', server='localhost')
 endpoints = [
@@ -105,6 +113,7 @@ endpoints = [
     TraceEndpoint(),
     TaskEndpoint(),
     ResultEndpoint(),
+    ConfigEndpoint(),
 ]
 server = oslo_messaging.get_rpc_server(transport, target, endpoints,
                                        executor='blocking')
