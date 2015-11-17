@@ -11,6 +11,7 @@ import signal
 from tooz import coordination
 import time
 from scalpels.agents import base
+from scalpels.client.api import api as agent_api
 
 """
 example:
@@ -27,9 +28,12 @@ ag = None
 
 def read_from_ag(ag):
     # wrong impl. here, need read from config or db instead
-    from scalpels.client.utils import tracers_map as agents_map
-    data_dir = db_api.setup_config_get()["data_dir"].rstrip("/")
-    return agents_map.get(ag) % data_dir
+    config = agent_api.get_config()
+    tracers = agent_api.get_tracer_list()
+    if ag not in tracers.keys():
+        raise ValueError("tracer %s is not found" % ag)
+    tpl = tracers[ag]
+    return tpl % config
 
 def handle_int(signal, frame):
     print "[LOG] xxx is interupted"
