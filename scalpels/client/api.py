@@ -57,5 +57,8 @@ class API(object):
     def get_config(self):
         return rpcapi.get_config()
 
+    def set_tracer_stat(self, tracer, running):
+        rpcapi.set_tracer_stat(tracer=tracer, running=running)
+
 
 api = API()

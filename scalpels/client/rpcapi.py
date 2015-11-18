@@ -37,5 +37,8 @@ class RPCAPI(object):
     def get_config(self, ctxt={}):
         return self._client.call(ctxt, "get_config")
 
+    def set_tracer_stat(self, ctxt={}, tracer=None, running=None):
+        self._client.cast(ctxt, "set_tracer_stat", tracer=tracer, running=running)
+
 transport = messaging.get_transport(cfg.CONF)
 rpcapi = RPCAPI(transport)

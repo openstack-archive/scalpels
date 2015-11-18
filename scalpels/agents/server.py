@@ -22,9 +22,11 @@ class TraceEndpoint(object):
 
     def tracer_list(self, ctx):
         tracers = db_api.tracer_list()
-        ret = {}
+        ret = list()
         for tr in tracers:
-            ret[tr.name] = tr.template
+            ret.append({"name":tr.name,
+                        "tpl":tr.template,
+                        "running":tr.is_running})
         return ret
 
     def start_tracers(self, ctx, tracers):
@@ -42,6 +44,11 @@ class TraceEndpoint(object):
     def register_tracer(self, ctx, tracer_opts):
         db_api.register_tracer(name=tracer_opts["name"], template=tracer_opts["tpl"])
         print "[LOG] registering tracer %(name)s: %(tpl)s" % tracer_opts
+
+    def set_tracer_stat(self, ctx, tracer, running):
+        running=bool(running)
+        print "[LOG] setting tracer: %s running: %s" % (tracer, running)
+        db_api.tracer_update(tracer, running=running)
 
 class TaskEndpoint(object):
 

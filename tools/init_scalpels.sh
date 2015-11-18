@@ -1,7 +1,7 @@
 #!/bin/bash -x
 # Author: Kun Huang <academicgareth@gmail.com>
 
-sca-manage setup -f
+sca-manage db-create -f
 sca-manage setup -d rpcport=5672 -t name=rpc -t tpl="bash %(tracer_path)s/port-input-traffic.sh %(rpcport)s"
 sca-manage setup -t name=mysql -t tpl="bash %(tracer_path)s/mysql-live.sh"
 sca-manage setup -t name=rabbit -t tpl="python %(tracer_path)s/rbt-trace.py"

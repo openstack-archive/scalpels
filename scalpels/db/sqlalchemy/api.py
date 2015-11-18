@@ -139,3 +139,15 @@ def update_config(data_opts):
 def get_config():
     config = model_query(models.Setup).first()
     return config.config
+
+def tracer_get(tracer):
+    tracer = model_query(models.Tracer).filter_by(name=tracer).first()
+    return tracer
+
+def tracer_update(tracer_name, running):
+    session = get_session()
+    tracer = model_query(models.Tracer, session=session).filter_by(name=tracer_name).first()
+    tracer.update({"is_running":running})
+    tracer.save(session=session)
+    print "[LOG] %s db update running %s" % (tracer.name, running)
+    return tracer

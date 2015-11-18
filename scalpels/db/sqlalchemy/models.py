@@ -7,7 +7,7 @@ import json
 
 from sqlalchemy import types as sqa_types
 from scalpels.db.sqlalchemy import BASE
-from sqlalchemy import (Column, Integer, String)
+from sqlalchemy import (Column, Integer, String, Boolean)
 from oslo_db.sqlalchemy import models as oslodbmodels
 
 
@@ -56,5 +56,4 @@ class Tracer(BASE, ScalpelsBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(20), nullable=False, unique=True)
     template = Column(String(20), nullable=False)
-    # yes for running, no for not
-    status = Column(String(20), default=lambda : "No",  nullable=False)
+    is_running = Column(Boolean(), default=False)

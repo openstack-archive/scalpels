@@ -68,3 +68,12 @@ def update_config(data_opts):
 
 def get_config():
     return IMPL.get_config()
+
+def tracer_get(tracer):
+    """
+    param tracer: tracer name, like, 'rpc'
+    """
+    return IMPL.tracer_get(tracer)
+
+def tracer_update(tracer, running):
+    return IMPL.tracer_update(tracer, running)

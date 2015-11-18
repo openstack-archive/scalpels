@@ -30,15 +30,16 @@ def read_from_ag(ag):
     # wrong impl. here, need read from config or db instead
     config = agent_api.get_config()
     tracers = agent_api.get_tracer_list()
-    if ag not in tracers.keys():
-        raise ValueError("tracer %s is not found" % ag)
-    tpl = tracers[ag]
-    return tpl % config
+    for tr in tracers:
+        if tr["name"] == ag:
+            return tr["tpl"] % config
+    raise ValueError("tracer %s is not found" % ag)
 
 def handle_int(signal, frame):
     print "[LOG] xxx is interupted"
     stop_tracer()
     save_result_to_task()
+    agent_api.set_tracer_stat(ag, running=False)
     sys.exit(0)
 
 def stop_tracer():
@@ -83,8 +84,11 @@ def main():
 
     worker = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     worker_pid = worker.pid
+    # this time, we got the pid, so tracer is running
+    agent_api.set_tracer_stat(ag, running=True)
     while True:
         t = worker.stdout.readline()
+
         if not len(t):
             break
         _t = (time.time(), t.strip())
