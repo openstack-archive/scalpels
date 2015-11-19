@@ -4,6 +4,9 @@ from scalpels.db import api as db_api
 from scalpels.agents.base import run_agent
 import psutil
 import signal
+from oslo_log import log as logging
+
+LOG = logging.getLogger(__name__)
 
 class ServerControlEndpoint(object):
 
@@ -30,13 +33,18 @@ class TraceEndpoint(object):
         return ret
 
     def start_tracers(self, ctx, tracers):
+        all_tr = self.tracer_list(ctx)
+        running_tr = map(lambda t:t["name"], filter(lambda t:t["running"], all_tr))
         task = db_api.task_create(results=[], pids=[])
 
         pids = []
         for tr in tracers:
-            pid = run_agent(task.uuid, tr)
-            print "[LOG] saving pid %s" % pid
-            pids.append(pid)
+            if tr in running_tr:
+                LOG.info("%s is running, skipped" % tr)
+            else:
+                pid = run_agent(task.uuid, tr)
+                LOG.debug("saving pid %s" % pid)
+                pids.append(pid)
 
         task = db_api.task_update(task.uuid, pids=pids)
         print "[LOG] task <%s> runs successfully!" % task.uuid
