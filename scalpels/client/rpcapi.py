@@ -13,6 +13,9 @@ class RPCAPI(object):
     def start_tracers(self, ctxt={}, tracers=None):
         self._client.cast(ctxt, "start_tracers", tracers=tracers)
 
+    def stop_tracers(self, ctxt={}, tracers=None):
+        self._client.cast(ctxt, "stop_tracers", tracers=tracers)
+
     def stop_task(self, ctxt={}, uuid=None):
         self._client.cast(ctxt, "stop_task", uuid=uuid)
 

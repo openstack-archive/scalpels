@@ -16,6 +16,9 @@ class API(object):
     def start_tracers(self, tracers):
         rpcapi.start_tracers(tracers=tracers)
 
+    def stop_tracers(self, tracers):
+        rpcapi.stop_tracers(tracers=tracers)
+
     def stop_task(self, uuid):
         rpcapi.stop_task(uuid=uuid)
 

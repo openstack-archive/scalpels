@@ -30,6 +30,7 @@ def main():
     stop = subparsers.add_parser("stop")
     stop.add_argument("--last", action="store_true", dest="last", help="report the last task")
     stop.add_argument("uuid", type=str, default="", nargs="?", help="report the last task")
+    stop.add_argument("-a", "--agent", action="append", dest="agent", help="agent(s) to stop", required=False)
 
     # setup report actions
     report = subparsers.add_parser("report")

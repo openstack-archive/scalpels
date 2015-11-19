@@ -51,6 +51,22 @@ class TracerEndpoint(object):
         task = db_api.task_update(task.uuid, pids=pids)
         print "[LOG] task <%s> runs successfully!" % task.uuid
 
+    def stop_tracers(self, ctx, tracers):
+        all_tr = {t["name"]:t for t in self.tracer_list(ctx)}
+        for tr in tracers:
+            if tr not in all_tr.keys():
+                LOG.info("%s is not registered" % tr)
+                continue
+            pid = all_tr[tr]["pid"]
+            if int(pid) < 0:
+                LOG.info("%s is not running, skipped" % tr)
+                continue
+            LOG.info("Stop tracer %s" % tr)
+            p = psutil.Process(int(pid))
+            p.send_signal(signal.SIGINT)
+
+
+
     def register_tracer(self, ctx, tracer_opts):
         db_api.register_tracer(name=tracer_opts["name"], template=tracer_opts["tpl"])
         print "[LOG] registering tracer %(name)s: %(tpl)s" % tracer_opts
