@@ -60,14 +60,12 @@ def save_result_to_task():
     co.start()
     lock = co.get_lock("task_update_lock")
     with lock:
-        task = db_api.task_get(task_uuid)
-        results = copy(task.results)
         for ret in parse_func(out):
             ret = db_api.result_create(**ret)
             print "[LOG] appending result with id %s" % ret.uuid
-            results.append(ret.uuid)
+            db_api.task_append_result(task_uuid, ret.uuid)
+            db_api.tracer_append_result(ag, ret.uuid)
         print "[LOG] update tas with result %s" % task_uuid
-        db_api.task_update(task_uuid, results=results)
         time.sleep(2)
     co.stop()
 

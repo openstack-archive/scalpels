@@ -30,7 +30,8 @@ class TracerEndpoint(object):
             ret.append({"name":tr.name,
                         "tpl":tr.template,
                         "running":tr.is_running,
-                        "pid":tr.pid})
+                        "pid":tr.pid,
+                        "results":tr.results})
         return ret
 
     def start_tracers(self, ctx, tracers):

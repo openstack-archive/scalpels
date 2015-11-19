@@ -39,6 +39,9 @@ def task_get(task_uuid, fuzzy=False):
 def task_update(task_uuid, results=None, pids=None):
     return IMPL.task_update(task_uuid, results, pids)
 
+def task_append_result(task_uuid, result_uuid):
+    return IMPL.task_append_result(task_uuid, result_uuid)
+
 def task_get_last():
     return IMPL.task_get_last()
 
@@ -77,3 +80,6 @@ def tracer_get(tracer):
 
 def tracer_update(tracer, running=None, pid=None):
     return IMPL.tracer_update(tracer, running, pid)
+
+def tracer_append_result(tracer, result_uuid):
+    return IMPL.tracer_append_result(tracer, result_uuid)

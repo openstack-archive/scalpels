@@ -57,4 +57,5 @@ class Tracer(BASE, ScalpelsBase):
     name = Column(String(20), nullable=False, unique=True)
     template = Column(String(20), nullable=False)
     is_running = Column(Boolean(), default=False)
+    results = Column(JSONEncodedData, nullable=False)
     pid = Column(Integer(), default=-1)

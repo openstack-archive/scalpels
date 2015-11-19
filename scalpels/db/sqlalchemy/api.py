@@ -77,7 +77,14 @@ def task_update(task_uuid, results=None, pids=None):
     task.save(session=session)
     return task
 
-
+def task_append_result(task_uuid, result_uuid):
+    session = get_session()
+    task = model_query(models.Task, session=session).filter_by(uuid=task_uuid).first()
+    new = copy(task.results)
+    new.append(result_uuid)
+    task.update({"results":new})
+    task.save(session=session)
+    return task
 
 def task_get(task_uuid, fuzzy=False):
     if not fuzzy:
@@ -119,7 +126,7 @@ def get_all_results():
 
 def register_tracer(name, template):
     tracer = models.Tracer()
-    tracer.update({"name":name, "template": template})
+    tracer.update({"name":name, "template": template, "results":[]})
     tracer.save()
     return tracer
 
@@ -153,5 +160,14 @@ def tracer_update(tracer_name, running=None, pid=None):
     if pid is not None:
         _update["pid"] = int(pid)
     tracer.update(_update)
+    tracer.save(session=session)
+    return tracer
+
+def tracer_append_result(tracer_name, result_uuid):
+    session = get_session()
+    tracer = model_query(models.Tracer, session=session).filter_by(name=tracer_name).first()
+    new = copy(tracer.results)
+    new.append(result_uuid)
+    tracer.update({"results":new})
     tracer.save(session=session)
     return tracer
