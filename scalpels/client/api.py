@@ -60,5 +60,8 @@ class API(object):
     def set_tracer_stat(self, tracer, running):
         rpcapi.set_tracer_stat(tracer=tracer, running=running)
 
+    def set_tracer_pid(self, tracer, pid):
+        rpcapi.set_tracer_pid(tracer=tracer, pid=pid)
+
 
 api = API()

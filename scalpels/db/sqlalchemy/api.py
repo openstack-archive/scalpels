@@ -144,10 +144,14 @@ def tracer_get(tracer):
     tracer = model_query(models.Tracer).filter_by(name=tracer).first()
     return tracer
 
-def tracer_update(tracer_name, running):
+def tracer_update(tracer_name, running=None, pid=None):
     session = get_session()
     tracer = model_query(models.Tracer, session=session).filter_by(name=tracer_name).first()
-    tracer.update({"is_running":running})
+    _update = {}
+    if running is not None:
+        _update["is_running"] = running
+    if pid is not None:
+        _update["pid"] = int(pid)
+    tracer.update(_update)
     tracer.save(session=session)
-    print "[LOG] %s db update running %s" % (tracer.name, running)
     return tracer

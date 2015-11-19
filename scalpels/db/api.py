@@ -75,5 +75,5 @@ def tracer_get(tracer):
     """
     return IMPL.tracer_get(tracer)
 
-def tracer_update(tracer, running):
-    return IMPL.tracer_update(tracer, running)
+def tracer_update(tracer, running=None, pid=None):
+    return IMPL.tracer_update(tracer, running, pid)

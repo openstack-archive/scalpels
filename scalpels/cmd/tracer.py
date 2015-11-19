@@ -36,9 +36,9 @@ def read_from_ag(ag):
     raise ValueError("tracer %s is not found" % ag)
 
 def handle_int(signal, frame):
-    print "[LOG] xxx is interupted"
     stop_tracer()
     save_result_to_task()
+    agent_api.set_tracer_pid(ag, pid=-1)
     agent_api.set_tracer_stat(ag, running=False)
     sys.exit(0)
 

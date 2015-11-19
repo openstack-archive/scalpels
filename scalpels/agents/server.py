@@ -19,7 +19,7 @@ class ServerControlEndpoint(object):
         if server:
             self.server.stop()
 
-class TraceEndpoint(object):
+class TracerEndpoint(object):
 
     target = oslo_messaging.Target(topic="test", version='1.0')
 
@@ -29,7 +29,8 @@ class TraceEndpoint(object):
         for tr in tracers:
             ret.append({"name":tr.name,
                         "tpl":tr.template,
-                        "running":tr.is_running})
+                        "running":tr.is_running,
+                        "pid":tr.pid})
         return ret
 
     def start_tracers(self, ctx, tracers):
@@ -44,6 +45,7 @@ class TraceEndpoint(object):
             else:
                 pid = run_agent(task.uuid, tr)
                 LOG.debug("saving pid %s" % pid)
+                self.set_tracer_pid(ctx, tr, pid)
                 pids.append(pid)
 
         task = db_api.task_update(task.uuid, pids=pids)
@@ -57,6 +59,9 @@ class TraceEndpoint(object):
         running=bool(running)
         print "[LOG] setting tracer: %s running: %s" % (tracer, running)
         db_api.tracer_update(tracer, running=running)
+
+    def set_tracer_pid(self, ctx, tracer, pid):
+        db_api.tracer_update(tracer, pid=pid)
 
 class TaskEndpoint(object):
 
@@ -125,7 +130,7 @@ transport = oslo_messaging.get_transport(cfg.CONF)
 target = oslo_messaging.Target(topic='test', server='localhost')
 endpoints = [
     ServerControlEndpoint(None),
-    TraceEndpoint(),
+    TracerEndpoint(),
     TaskEndpoint(),
     ResultEndpoint(),
     ConfigEndpoint(),

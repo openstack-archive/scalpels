@@ -8,7 +8,7 @@ from prettytable import PrettyTable
 
 def run(config):
     tracers = agent_api.get_tracer_list()
-    t = PrettyTable(["tracer", "tracer template", "is running"])
+    t = PrettyTable(["tracer", "tracer template", "is running", "pid"])
     for tr in tracers:
-        t.add_row([tr["name"],tr["tpl"],tr["running"]])
+        t.add_row([tr["name"],tr["tpl"],tr["running"],tr["pid"]])
     print t
