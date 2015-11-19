@@ -38,6 +38,10 @@ function report_html_test {
     sca report --html > $BASE/logs/scalpels-report.html
 }
 
+function get_rpc_result {
+    sca report -a rpc
+}
+
 function ubuntu_stap_test {
     scal_ci=$BASE/new/scalpels/tests/ci/
     sudo stap -vv $scal_ci/pyfunc.stp -c "$DATA_DIR/cpython_build/bin/python $scal_ci/test-func.py"
@@ -51,5 +55,6 @@ function stap_test {
 
 debug_msg
 basic_test
+get_rpc_result
 report_html_test
 stap_test
