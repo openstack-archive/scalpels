@@ -23,7 +23,7 @@ function init_scalpels {
 }
 
 function start_scalpels {
-    sca-manage setup -d /opt/stack/data/scalpels/scripts
+    /opt/stack/data/scalpels/tools/init_scalpels.sh
     run_process scalpels "sca-agent"
 }
 
