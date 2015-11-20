@@ -88,7 +88,7 @@ class TaskEndpoint(object):
         print "[LOG] stopping task: %s" % uuid
         task = db_api.task_get(uuid)
         for pid in task.pids:
-            print "[LOG] interupt process %s" % pid
+            print "[LOG] interrupt process %s" % pid
             p = psutil.Process(int(pid))
             p.send_signal(signal.SIGINT)
 
