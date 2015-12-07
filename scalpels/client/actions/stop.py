@@ -2,8 +2,11 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from scalpels.client.api import api as agent_api
-from scalpels.client.actions.start import _parse_agents_from_args
+from scalpels.client.actions.start import _parse_agents_from_args  # noqa
+from scalpels.client import api
+
+
+agent_api = api.api
 
 
 def run(config):

@@ -2,9 +2,14 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-import os
 import json
-from scalpels.client.api import api as agent_api
+import os
+
+from scalpels.client import api
+
+
+agent_api = api.api
+
 
 def _parse_agents_from_args(config):
     parsed_agents = set()
@@ -12,7 +17,7 @@ def _parse_agents_from_args(config):
         return parsed_agents
     for ag in config.get("agent"):
         parsed_agents |= set(ag.split(","))
-    config.update({"agent":parsed_agents})
+    config.update({"agent": parsed_agents})
     return parsed_agents
 
 
@@ -28,6 +33,7 @@ def _parse_agents_from_file(config):
     for ag in data["agents"]:
         parsed_agents.add(ag["name"])
     return parsed_agents
+
 
 def run(config):
     print "command start: %s" % config

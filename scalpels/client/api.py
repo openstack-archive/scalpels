@@ -2,9 +2,12 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
+from scalpels.client import rpcapi
+from scalpels.client import utils
 
-from scalpels.client.rpcapi import rpcapi
-from scalpels.client.utils import UUID_LOWEST_SUPPORT
+UUID_LOWEST_SUPPORT = utils.UUID_LOWEST_SUPPORT
+rpcapi = rpcapi.rpcapi
+
 
 class API(object):
     def __init__(self):
@@ -24,7 +27,8 @@ class API(object):
 
     def get_task(self, uuid, fuzzy=False):
         if fuzzy and len(uuid) < UUID_LOWEST_SUPPORT:
-            raise ValueError("fuzzy uuid query must get %s length" % UUID_LOWEST_SUPPORT)
+            raise ValueError("fuzzy uuid query must get %s length" %
+                             UUID_LOWEST_SUPPORT)
         return rpcapi.get_task(uuid=uuid, fuzzy=fuzzy)
 
     def get_latest_task(self):
@@ -44,7 +48,7 @@ class API(object):
             raise ValueError("can't assign last and uuid togther")
         elif uuid:
             return self.get_task(uuid, fuzzy=True)
-        else: # no matter whether last is set
+        else:  # no matter whether last is set
             return self.get_latest_task()
 
     def register_tracer(self, tracer_opts):

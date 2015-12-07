@@ -2,17 +2,22 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from oslo_config import cfg
+import copy
 import sys
-from scalpels.db.sqlalchemy import BASE
-from scalpels.db.sqlalchemy import models
+
+from oslo_config import cfg
 from oslo_db.sqlalchemy import session as db_session
 from oslo_db.sqlalchemy import utils as oslodbsqa_utils
-from copy import deepcopy as copy
+
+from scalpels.db import sqlalchemy
+from scalpels.db.sqlalchemy import models
 
 CONF = cfg.CONF
 
 _FACADE = None
+
+BASE = sqlalchemy.BASE
+
 
 def _create_facade_lazily():
     global _FACADE
@@ -22,26 +27,32 @@ def _create_facade_lazily():
 
     return _FACADE
 
+
 def get_engine():
     facade = _create_facade_lazily()
     return facade.get_engine()
+
 
 def get_session(**kwargs):
     facade = _create_facade_lazily()
     return facade.get_session(**kwargs)
 
+
 def get_backend():
     return sys.modules[__name__]
+
 
 def db_create(sc):
     BASE.metadata.create_all(get_engine())
     setup = models.Setup()
-    setup.update({"config":sc})
+    setup.update({"config": sc})
     setup.save()
     return setup
 
+
 def db_drop():
     BASE.metadata.drop_all(get_engine())
+
 
 def model_query(model, session=None):
     if session is None:
@@ -49,25 +60,28 @@ def model_query(model, session=None):
     query = oslodbsqa_utils.model_query(model, session)
     return query
 
+
 def result_create(name="", unit="", data=None, rtype=None):
     result = models.Result()
-    result.update({"name":name,
+    result.update({"name": name,
                    "unit": unit,
-                   "data":data,
-                   "rtype": rtype if rtype else "unknown",
-                  })
+                   "data": data,
+                   "rtype": rtype if rtype else "unknown"})
     result.save()
     return result
 
+
 def task_create(results, pids):
     task = models.Task()
-    task.update({"results":results, "pids":pids})
+    task.update({"results": results, "pids": pids})
     task.save()
     return task
 
+
 def task_update(task_uuid, results=None, pids=None):
     session = get_session()
-    task = model_query(models.Task, session=session).filter_by(uuid=task_uuid).first()
+    task = (model_query(models.Task, session=session).
+            filter_by(uuid=task_uuid).first())
     _update = dict()
     if results:
         _update["results"] = results
@@ -77,14 +91,17 @@ def task_update(task_uuid, results=None, pids=None):
     task.save(session=session)
     return task
 
+
 def task_append_result(task_uuid, result_uuid):
     session = get_session()
-    task = model_query(models.Task, session=session).filter_by(uuid=task_uuid).first()
-    new = copy(task.results)
+    task = (model_query(models.Task, session=session).
+            filter_by(uuid=task_uuid).first())
+    new = copy.deepcopy(task.results)
     new.append(result_uuid)
-    task.update({"results":new})
+    task.update({"results": new})
     task.save(session=session)
     return task
+
 
 def task_get(task_uuid, fuzzy=False):
     if not fuzzy:
@@ -107,11 +124,13 @@ def result_get(result_uuid):
     ret = model_query(models.Result).filter_by(uuid=result_uuid).first()
     return ret
 
+
 def task_get_last():
     tasks = model_query(models.Task).all()
     if len(tasks) > 0:
         return tasks[-1]
     return None
+
 
 def setup_config_get():
     setups = model_query(models.Setup).all()
@@ -120,40 +139,48 @@ def setup_config_get():
         return setup.config
     return None
 
+
 def get_all_results():
     rets = model_query(models.Result).all()
     return rets
 
+
 def register_tracer(name, template):
     tracer = models.Tracer()
-    tracer.update({"name":name, "template": template, "results":[]})
+    tracer.update({"name": name, "template": template, "results": []})
     tracer.save()
     return tracer
+
 
 def tracer_list():
     tracers = model_query(models.Tracer).all()
     return tracers
 
+
 def update_config(data_opts):
     session = get_session()
     config = model_query(models.Setup, session=session).first()
-    new = copy(config.config)
+    new = copy.deepcopy(config.config)
     new.update(data_opts)
-    config.update({"config":new})
+    config.update({"config": new})
     config.save(session=session)
     return config
+
 
 def get_config():
     config = model_query(models.Setup).first()
     return config.config
 
+
 def tracer_get(tracer):
     tracer = model_query(models.Tracer).filter_by(name=tracer).first()
     return tracer
 
+
 def tracer_update(tracer_name, running=None, pid=None):
     session = get_session()
-    tracer = model_query(models.Tracer, session=session).filter_by(name=tracer_name).first()
+    tracer = (model_query(models.Tracer, session=session).
+              filter_by(name=tracer_name).first())
     _update = {}
     if running is not None:
         _update["is_running"] = running
@@ -163,11 +190,13 @@ def tracer_update(tracer_name, running=None, pid=None):
     tracer.save(session=session)
     return tracer
 
+
 def tracer_append_result(tracer_name, result_uuid):
     session = get_session()
-    tracer = model_query(models.Tracer, session=session).filter_by(name=tracer_name).first()
-    new = copy(tracer.results)
+    tracer = (model_query(models.Tracer, session=session).
+              filter_by(name=tracer_name).first())
+    new = copy.deepcopy(tracer.results)
     new.append(result_uuid)
-    tracer.update({"results":new})
+    tracer.update({"results": new})
     tracer.save(session=session)
     return tracer

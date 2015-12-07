@@ -2,16 +2,17 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-import subprocess
-import psutil
-import sys
-from scalpels.db import api as db_api
-from copy import deepcopy as copy
 import signal
-from tooz import coordination
+import subprocess
+import sys
 import time
+
+import psutil
+from tooz import coordination
+
 from scalpels.agents import base
-from scalpels.client.api import api as agent_api
+from scalpels.client import api
+from scalpels.db import api as db_api
 
 """
 example:
@@ -21,10 +22,12 @@ TODO:
     config key-word arguments for each tracer
 """
 
+agent_api = api.api
 worker_pid = None
 task_uuid = None
 out = None
 ag = None
+
 
 def read_from_ag(ag):
     # wrong impl. here, need read from config or db instead
@@ -35,12 +38,14 @@ def read_from_ag(ag):
             return tr["tpl"] % config
     raise ValueError("tracer %s is not found" % ag)
 
+
 def handle_int(signal, frame):
     stop_tracer()
     save_result_to_task()
     agent_api.set_tracer_pid(ag, pid=-1)
     agent_api.set_tracer_stat(ag, running=False)
     sys.exit(0)
+
 
 def stop_tracer():
     global worker_pid
@@ -49,12 +54,13 @@ def stop_tracer():
     worker_p = psutil.Process(worker_pid)
     worker_p.send_signal(signal.SIGINT)
 
+
 def save_result_to_task():
     global task_uuid
     global out
     parse_func = getattr(base, "parse_%s" % ag)
 
-    # TODO file lock is okay in localhost, here need redis for distributed
+    # TODO(kun) file lock is okay in localhost, here need redis for distributed
     # lock istead
     co = coordination.get_coordinator("file:///tmp", b"localhost")
     co.start()
@@ -68,6 +74,7 @@ def save_result_to_task():
         print "[LOG] update tas with result %s" % task_uuid
         time.sleep(2)
     co.stop()
+
 
 def main():
     global worker_pid
@@ -91,7 +98,6 @@ def main():
             break
         _t = (time.time(), t.strip())
         out.append(_t)
-
 
 
 if __name__ == "__main__":

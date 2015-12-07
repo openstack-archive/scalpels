@@ -1,5 +1,6 @@
-import oslo_messaging as messaging
 from oslo_config import cfg
+import oslo_messaging as messaging
+
 
 class RPCAPI(object):
 
@@ -41,7 +42,8 @@ class RPCAPI(object):
         return self._client.call(ctxt, "get_config")
 
     def set_tracer_stat(self, ctxt={}, tracer=None, running=None):
-        self._client.cast(ctxt, "set_tracer_stat", tracer=tracer, running=running)
+        self._client.cast(ctxt, "set_tracer_stat", tracer=tracer,
+                          running=running)
 
     def set_tracer_pid(self, ctxt={}, tracer=None, pid=None):
         self._client.cast(ctxt, "set_tracer_pid", tracer=tracer, pid=pid)

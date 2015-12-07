@@ -2,8 +2,10 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-from novaclient import client
 import os
+
+from novaclient import client
+
 
 def run(config):
     loads = (k for k in config if config[k])
@@ -15,12 +17,14 @@ def run(config):
             continue
         loadcall(config)
 
+
 def _get_creds_from_env():
     user = os.environ.get("OS_USERNAME")
     pw = os.environ.get("OS_PASSWORD")
     tenant = os.environ.get("OS_TENANT_NAME")
-    auth_url= os.environ.get("OS_AUTH_URL")
+    auth_url = os.environ.get("OS_AUTH_URL")
     return (user, pw, tenant, auth_url)
+
 
 def nova_boot_bulk():
     creds = _get_creds_from_env()
@@ -30,11 +34,13 @@ def nova_boot_bulk():
     image = nova.images.find(name="cirros-0.3.4-x86_64-uec")
     flavor = nova.flavors.get("3")
     net = nova.networks.find(label="private")
-    nics = [{"net-id":net.id}]
-    ret = nova.servers.create(name="bulk-foo", image=image, flavor=flavor, min_count=2, max_count=2, nics=nics)
+    nics = [{"net-id": net.id}]
+    ret = nova.servers.create(name="bulk-foo", image=image, flavor=flavor,
+                              min_count=2, max_count=2, nics=nics)
     print "we got %s" % ret
     return
 
+
 def load_storm(config):
-    #TODO use novaclient python api to do this
+    #TODO(kun) use novaclient python api to do this
     nova_boot_bulk()

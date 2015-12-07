@@ -2,26 +2,33 @@
 #-*- coding:utf-8 -*-
 # Author: Kun Huang <academicgareth@gmail.com>
 
-import os
 import argparse
-import psutil
+import os
 import signal
+
+import psutil
+
+from scalpels.client import api
 from scalpels.db import api as db_api
-from scalpels.client.api import api as agent_api
+
+
+agent_api = api.api
+
 
 def get_default_tracer_dir():
     # /opt/stack/data/ for devstack case
     # /opt/stack/
 
-    # TODO replace these ugly codes
+    # TODO(kun) replace these ugly codes
     cmd = os.path.dirname(__file__)
     scalpels_py = os.path.dirname(cmd)
     scalpels_package = os.path.dirname(scalpels_py)
     default_data_dir = os.path.join(scalpels_package, "scripts")
     return default_data_dir
 
+
 def do_db(parser):
-    setup_config = {"tracer_path":get_default_tracer_dir()}
+    setup_config = {"tracer_path": get_default_tracer_dir()}
     if parser.force:
         print "recreating database"
         db_api.db_drop()
@@ -29,6 +36,7 @@ def do_db(parser):
     else:
         print "creating database"
         db_api.db_create(setup_config)
+
 
 def do_setup(parser):
     data_opts = dict(parser.data_opts) if parser.data_opts else None
@@ -44,14 +52,15 @@ def do_setup(parser):
 
     if parser.stat:
         config = agent_api.get_config()
-        from prettytable import PrettyTable
-        t = PrettyTable(["key", "value"])
-        for k,v in config.items():
+        import prettytable
+        t = prettytable.PrettyTable(["key", "value"])
+        for k, v in config.items():
             t.add_row([k, v])
         print t
 
+
 def do_stop(parser):
-    # TODO call rpc server's stop API instead
+    # TODO(kun) call rpc server's stop API instead
     for p in psutil.process_iter():
         if p.as_dict()["cmdline"] and "sca-agent" in " ".join(p.cmdline):
             print "killing process %d, %s" % (p.pid, p.cmdline)
@@ -60,21 +69,28 @@ def do_stop(parser):
     print "Can't find sca-agent process"
     return
 
+
 def main():
-    rootparser = argparse.ArgumentParser(description="main entry point for scalpels")
+    rootparser = argparse.ArgumentParser(description="entry point of scalpels")
     subparsers = rootparser.add_subparsers(title="actions", dest="action")
 
     # db actions
     db = subparsers.add_parser("db-create")
-    db.add_argument("-f", "--force", action="store_true", dest="force", help="re-create db")
+    db.add_argument("-f", "--force", action="store_true",
+                    dest="force", help="re-create db")
 
     # setup re-setup actions
     setup = subparsers.add_parser("setup")
-    setup.add_argument("-d", "--data_opts", action="append", dest="data_opts", type=lambda kv:kv.split("="), help="data opts for tracer variables", required=False)
-    setup.add_argument("-t", "--tracer_opts", action="append", dest="tracer_opts", type=lambda kv:kv.split("="), help="tracer opts for registering", required=False)
-    setup.add_argument("-s", "--stat", action="store_true", dest="stat", help="setup stats for this agent")
+    setup.add_argument("-d", "--data_opts", action="append", dest="data_opts",
+                       type=lambda kv: kv.split("="),
+                       help="data opts for tracer variables", required=False)
+    setup.add_argument("-t", "--tracer_opts", action="append",
+                       dest="tracer_opts", type=lambda kv: kv.split("="),
+                       help="tracer opts for registering", required=False)
+    setup.add_argument("-s", "--stat", action="store_true", dest="stat",
+                       help="setup stats for this agent")
 
-    stop = subparsers.add_parser("stop")
+    stop = subparsers.add_parser("stop")  # noqa
 
     parser = rootparser.parse_args()
 
@@ -86,6 +102,7 @@ def main():
 
     if parser.action == "stop":
         do_stop(parser)
+
 
 if __name__ == "__main__":
     main()
