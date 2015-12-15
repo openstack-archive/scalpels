@@ -1,6 +1,6 @@
 Scalpels
 ========
-Scalpels is distributed tracing or digging system for OpenStack.
+Scalpels is distributed tracing or debuging system for OpenStack.
 
 Background
 ==========
