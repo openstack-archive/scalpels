@@ -18,8 +18,6 @@ Single Node Architecture
 ========================
 This type of deployment is used as POC in OpenStack community CI.
 
-   :alt: All-in-One deployment
-
 .. image:: doc/source/images/allinone.png
    :alt: All-in-One deployment
 
@@ -32,7 +30,7 @@ This is under Designing:
 .. image:: doc/source/images/multiple.png
    :alt: Multiple deployment
 
-In multiple node scenario, Scalpels Server are non-state servers, they are distributed in multiple nodes, each Scalpels Server knows all agents' location and could forward the request to start tracers.
+In multiple nodes scenario, Scalpels Server are non-state servers, they are distributed in multiple nodes, each Scalpels Server knows all agents' location and could forward the request to start tracers.
 
 Scalpels Agent is introduced to manage trace process, it can be combined with Scalpels server during implementation.
 
