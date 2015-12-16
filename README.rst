@@ -18,8 +18,6 @@ Single Node Architecture
 ========================
 This type of deployment is used as POC in OpenStack community CI.
 
-   :alt: All-in-One deployment
-
 .. image:: doc/source/images/allinone.png
    :alt: All-in-One deployment
 
@@ -46,7 +44,9 @@ The relationship is:
    :alt: agent-tracer-worker.png
 
 Scalpels Agent: manager tracers by start/stop signals.
+
 Tracer: Start worker process and write its stdout to database.
+
 Worker: It fetches data from operating system.
 
 Ideas
