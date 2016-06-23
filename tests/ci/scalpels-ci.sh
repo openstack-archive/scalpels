@@ -13,7 +13,7 @@ function debug_msg {
 
 function basic_test {
     sca tracer -l
-    sca start -a rpc -a rabbit -a traffic
+    sca start -a rpc -a rabbit -a traffic -a iocount
 
     sca load --storm
     sleep 10

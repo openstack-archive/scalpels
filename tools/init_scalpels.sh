@@ -10,4 +10,5 @@ sca-manage setup -t name=oslolock -t tpl="stap %(tracer_path)s/oslo-lock.stp"
 sca-manage setup -t name=modelsave -t tpl="stap %(tracer_path)s/model-save.stp"
 sca-manage setup -t name=sqlaexec -t tpl="stap %(tracer_path)s/sqla-exec.stp"
 sca-manage setup -t name=rpccount -t tpl="stap %(tracer_path)s/rpc-count.stp"
+sca-manage setup -t name=iocount -t tpl="stap %(tracer_path)s/io-count.stp"
 sca tracer -l
