@@ -1,10 +1,10 @@
 Scalpels
 ========
-Scalpels is a distributed tracing or debuging system for OpenStack.
+Scalpels is a distributed tracing or debugging system for OpenStack.
 
 Background
 ==========
-OpenStack is made of multiple Python-based projects. Each project has similiar but different architecture. Scalpels intergates some useful scripts or 3rd tools to help operator track system status in your cloud environments.
+OpenStack is made of multiple Python-based projects. Each project has similar but different architecture. Scalpels integrates some useful scripts or 3rd tools to help operator track system status in your cloud environments.
 
 Contribute
 ==========
@@ -12,7 +12,7 @@ This project is a prototype now and is under development. If you have interests 
 
 Mission
 =======
-Scalpels is a kind of "debugfs" for OpenStack. It gathers data from number of tracers like proc or systemtap which could be used to quantize preformance under workloads.
+Scalpels is a kind of "debugfs" for OpenStack. It gathers data from number of tracers like proc or systemtap which could be used to quantize performance under workloads.
 
 Single Node Architecture
 ========================
