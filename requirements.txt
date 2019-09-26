@@ -1,9 +1,0 @@
-pbr
-oslo.db
-python-novaclient
-sphinx!=1.2.0,!=1.3b1,<1.3,>=1.1.2
-psutil>=1.1.1,<2.0.0
-tooz>=1.19.0 # Apache-2.0
-PrettyTable>=0.7,<0.8
-Mako>=0.4.0
-oslo.messaging>=1.16.0,!=1.17.0,!=1.17.1,!=2.6.0,!=2.6.1 # Apache-2.0
